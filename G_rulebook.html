@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ルールブック｜配属決定ゲーム</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+         background: #F8F4FB; color: #333; }
+  .header { background: linear-gradient(135deg, #6B3F9E, #9B5FC0);
+             color: white; padding: 20px 16px 16px; }
+  .header .back { font-size: 13px; opacity: 0.8; margin-bottom: 10px; }
+  .header .back a { color: white; text-decoration: none; }
+  .header .label { font-size: 11px; background: rgba(255,255,255,0.25);
+                   display: inline-block; padding: 3px 10px; border-radius: 20px;
+                   margin-bottom: 8px; letter-spacing: 0.5px; }
+  .header h1 { font-size: 22px; font-weight: 700; line-height: 1.3; }
+  .header .sub { font-size: 13px; opacity: 0.8; margin-top: 6px; }
+  .container { max-width: 500px; margin: 0 auto; padding: 16px; }
+
+  .overview-card { background: white; border-radius: 16px; padding: 20px;
+                   margin-bottom: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+  .overview-card h2 { font-size: 16px; color: #6B3F9E; margin-bottom: 14px;
+                      padding-bottom: 10px; border-bottom: 2px solid #F0E6FB; }
+  .overview-card p { font-size: 15px; line-height: 1.8; color: #444; }
+
+  .info-row { display: flex; gap: 12px; margin-bottom: 16px; }
+  .info-box { flex: 1; background: white; border-radius: 14px; padding: 16px 12px;
+              box-shadow: 0 2px 10px rgba(0,0,0,0.06); text-align: center; }
+  .info-box .icon { font-size: 28px; margin-bottom: 6px; }
+  .info-box .label { font-size: 11px; color: #888; margin-bottom: 4px; }
+  .info-box .value { font-size: 15px; font-weight: 700; color: #333; }
+
+  .section { background: white; border-radius: 16px; padding: 20px;
+             margin-bottom: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+  .section h2 { font-size: 16px; color: #6B3F9E; margin-bottom: 14px;
+                padding-bottom: 10px; border-bottom: 2px solid #F0E6FB; }
+
+  .phase-item { display: flex; align-items: flex-start; margin-bottom: 14px; }
+  .phase-item:last-child { margin-bottom: 0; }
+  .phase-num { background: #6B3F9E; color: white; font-size: 13px; font-weight: 700;
+               width: 28px; height: 28px; border-radius: 50%;
+               display: flex; align-items: center; justify-content: center;
+               flex-shrink: 0; margin-right: 12px; margin-top: 1px; }
+  .phase-body { flex: 1; }
+  .phase-time { font-size: 11px; color: #888; font-weight: 600; margin-bottom: 2px; }
+  .phase-title { font-size: 15px; font-weight: 700; color: #222; }
+  .phase-desc { font-size: 13px; color: #666; margin-top: 3px; line-height: 1.5; }
+
+  .person-card { border: 1px solid #F0E6FB; border-radius: 12px; padding: 14px;
+                 margin-bottom: 10px; }
+  .person-card:last-child { margin-bottom: 0; }
+  .person-no { font-size: 11px; color: #9B5FC0; font-weight: 700; margin-bottom: 4px; }
+  .person-name { font-size: 16px; font-weight: 700; color: #222; }
+  .person-school { font-size: 12px; color: #888; margin-top: 2px; }
+  .person-tag { display: inline-block; background: #F0E6FB; color: #6B3F9E;
+                font-size: 12px; border-radius: 20px; padding: 3px 10px;
+                margin-top: 8px; font-weight: 600; }
+
+  .dept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .dept-item { background: #F8F4FB; border-radius: 10px; padding: 10px 12px; }
+  .dept-num { font-size: 11px; color: #888; margin-bottom: 2px; }
+  .dept-name { font-size: 13px; font-weight: 700; color: #333; line-height: 1.3; }
+
+  .rule-box { background: #F0E6FB; border-radius: 12px; padding: 16px; }
+  .rule-item { display: flex; align-items: flex-start; margin-bottom: 12px; }
+  .rule-item:last-child { margin-bottom: 0; }
+  .rule-dot { width: 8px; height: 8px; background: #6B3F9E; border-radius: 50%;
+              flex-shrink: 0; margin-top: 6px; margin-right: 10px; }
+  .rule-text { font-size: 15px; color: #333; line-height: 1.6; }
+  .rule-text strong { color: #6B3F9E; }
+
+  .back-link { text-align: center; padding: 20px 0; }
+  .back-link a { color: #6B3F9E; text-decoration: none; font-size: 14px; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="back"><a href="index.html">← 資料一覧に戻る</a></div>
+  <div class="label">G — ルールブック</div>
+  <h1>配属決定ゲーム<br>ルールブック</h1>
+  <div class="sub">学生（人事部員役）向け｜2030年度版</div>
+</div>
+
+<div class="container">
+
+  <!-- ゲームの概要 -->
+  <div class="overview-card">
+    <h2>🎯 ゲームの目標</h2>
+    <p>あなたたちは<strong>株式会社ラヴィールの人事部員</strong>です。今年の新卒採用で内定を出した<strong>5名のエントリーシート（ES）</strong>を読み込み、チームで話し合いながら「この人はどの部署に配属するのがベストか」を決定してください。</p>
+  </div>
+
+  <!-- 基本情報 -->
+  <div class="info-row">
+    <div class="info-box">
+      <div class="icon">👥</div>
+      <div class="label">プレイ人数</div>
+      <div class="value">4〜6名</div>
+    </div>
+    <div class="info-box">
+      <div class="icon">⏱️</div>
+      <div class="label">所要時間</div>
+      <div class="value">約90分</div>
+    </div>
+  </div>
+
+  <!-- フェーズ -->
+  <div class="section">
+    <h2>📅 進め方（全6フェーズ）</h2>
+    <div class="phase-item">
+      <div class="phase-num">1</div>
+      <div class="phase-body">
+        <div class="phase-time">0〜10分</div>
+        <div class="phase-title">準備・読み込み</div>
+        <div class="phase-desc">資料を受け取り、ゲームの概要を把握する</div>
+      </div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-num">2</div>
+      <div class="phase-body">
+        <div class="phase-time">10〜25分</div>
+        <div class="phase-title">個人メモ作成</div>
+        <div class="phase-desc">ESと部署ガイドを読み込み、自分の考えをまとめる</div>
+      </div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-num">3</div>
+      <div class="phase-body">
+        <div class="phase-time">25〜60分</div>
+        <div class="phase-title">チーム討議</div>
+        <div class="phase-desc">グループで候補者ごとに配属先を議論する</div>
+      </div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-num">4</div>
+      <div class="phase-body">
+        <div class="phase-time">60〜75分</div>
+        <div class="phase-title">配属決定</div>
+        <div class="phase-desc">5名全員の配属先を確定し、記録する</div>
+      </div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-num">5</div>
+      <div class="phase-body">
+        <div class="phase-time">75〜85分</div>
+        <div class="phase-title">振り返り</div>
+        <div class="phase-desc">決定理由と議論のポイントを整理する</div>
+      </div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-num">6</div>
+      <div class="phase-body">
+        <div class="phase-time">85〜90分</div>
+        <div class="phase-title">発表・共有</div>
+        <div class="phase-desc">クラス全体で配属結果と理由を共有する</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 内定者5名 -->
+  <div class="section">
+    <h2>👤 新卒内定者5名</h2>
+    <div class="person-card">
+      <div class="person-no">No.1</div>
+      <div class="person-name">中村 さくら</div>
+      <div class="person-school">大和女子短期大学 観光ビジネス学科</div>
+      <div class="person-tag">場の空気を読む気遣いの人</div>
+    </div>
+    <div class="person-card">
+      <div class="person-no">No.2</div>
+      <div class="person-name">田中 みなみ</div>
+      <div class="person-school">関西文化短期大学 人文学科</div>
+      <div class="person-tag">几帳面・ミスゼロの正確さ</div>
+    </div>
+    <div class="person-card">
+      <div class="person-no">No.3</div>
+      <div class="person-name">山口 はな</div>
+      <div class="person-school">近畿総合福祉短期大学 社会福祉学科</div>
+      <div class="person-tag">聞く力・傾聴のプロ</div>
+    </div>
+    <div class="person-card">
+      <div class="person-no">No.4</div>
+      <div class="person-name">西川 こと</div>
+      <div class="person-school">京都文化学園短期大学 文化表現学科</div>
+      <div class="person-tag">デザインセンス◎ / 空間を見る目</div>
+    </div>
+    <div class="person-card">
+      <div class="person-no">No.5</div>
+      <div class="person-name">田村 蓮</div>
+      <div class="person-school">摂津ビジネス短期大学 経営学科</div>
+      <div class="person-tag">行動力◎ / SNS巧み</div>
+    </div>
+  </div>
+
+  <!-- 配属候補9部署 -->
+  <div class="section">
+    <h2>🏢 配属先候補9部署</h2>
+    <div class="dept-grid">
+      <div class="dept-item">
+        <div class="dept-num">①</div>
+        <div class="dept-name">法人営業部（百貨店・商業施設担当）</div>
+      </div>
+      <div class="dept-item">
+        <div class="dept-num">②</div>
+        <div class="dept-name">法人営業部（地方小売・専門店担当）</div>
+      </div>
+      <div class="dept-item">
+        <div class="dept-num">③</div>
+        <div class="dept-name">直営店 販売部</div>
+      </div>
+      <div class="dept-item">
+        <div class="dept-num">④</div>
+        <div class="dept-name">EC・デジタル事業部</div>
+      </div>
+      <div class="dept-item">
+        <div class="dept-num">⑤</div>
+        <div class="dept-name">広報・ブランドコミュニケーション部</div>
+      </div>
+      <div class="dept-item">
+        <div class="dept-num">⑥</div>
+        <div class="dept-name">総務・人事部</div>
+      </div>
+      <div class="dept-item">
+        <div class="dept-num">⑦</div>
+        <div class="dept-name">経理・財務部</div>
+      </div>
+      <div class="dept-item">
+        <div class="dept-num">⑧</div>
+        <div class="dept-name">調達・生産管理部</div>
+      </div>
+      <div class="dept-item">
+        <div class="dept-num">⑨</div>
+        <div class="dept-name">カスタマーサポート部</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 配属ルール -->
+  <div class="section">
+    <h2>⚠️ 配属のルール</h2>
+    <div class="rule-box">
+      <div class="rule-item">
+        <div class="rule-dot"></div>
+        <div class="rule-text"><strong>1部署に配属できるのは1名まで</strong></div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-dot"></div>
+        <div class="rule-text"><strong>5名全員</strong>を5つの<strong>異なる部署</strong>に配属する</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-dot"></div>
+        <div class="rule-text">全員の配属先を決定するまでゲーム終了とならない</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="back-link"><a href="index.html">← 資料一覧に戻る</a></div>
+</div>
+
+</body>
+</html>

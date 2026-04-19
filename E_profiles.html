@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESプロフィール集｜配属決定ゲーム</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+         background: #FBF4F7; color: #333; }
+  .header { background: linear-gradient(135deg, #9E1E5A, #C44080);
+             color: white; padding: 20px 16px 16px; }
+  .header .back a { color: white; text-decoration: none; font-size: 13px; opacity: 0.8; }
+  .header .label { font-size: 11px; background: rgba(255,255,255,0.25);
+                   display: inline-block; padding: 3px 10px; border-radius: 20px;
+                   margin: 10px 0 8px; }
+  .header h1 { font-size: 22px; font-weight: 700; line-height: 1.3; }
+  .header .sub { font-size: 13px; opacity: 0.8; margin-top: 6px; }
+
+  .nav-tabs { display: flex; background: #F0E0EA; overflow-x: auto;
+              scrollbar-width: none; border-bottom: 2px solid #E0C0D0; }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .tab-btn { flex-shrink: 0; padding: 12px 16px; background: none; border: none;
+             font-size: 14px; color: #888; cursor: pointer; white-space: nowrap;
+             border-bottom: 3px solid transparent; margin-bottom: -2px;
+             font-family: inherit; font-weight: 600; }
+  .tab-btn.active { color: #9E1E5A; border-bottom-color: #9E1E5A; background: white; }
+
+  .container { max-width: 500px; margin: 0 auto; padding: 16px; }
+  .person-panel { display: none; }
+  .person-panel.active { display: block; }
+
+  .hero-card { background: linear-gradient(135deg, #9E1E5A, #C44080);
+               color: white; border-radius: 16px; padding: 20px;
+               margin-bottom: 14px; }
+  .hero-no { font-size: 12px; opacity: 0.8; margin-bottom: 6px; font-weight: 600; }
+  .hero-name { font-size: 26px; font-weight: 700; margin-bottom: 4px; }
+  .hero-school { font-size: 13px; opacity: 0.85; margin-bottom: 14px; line-height: 1.5; }
+  .hero-tag { display: inline-block; background: rgba(255,255,255,0.25);
+              border-radius: 20px; padding: 6px 14px; font-size: 14px; font-weight: 600; }
+  .hero-age { font-size: 13px; opacity: 0.75; margin-top: 10px; }
+
+  .section { background: white; border-radius: 14px; padding: 18px;
+             margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .section h3 { font-size: 14px; color: #9E1E5A; font-weight: 700;
+                margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+  .section p { font-size: 15px; line-height: 1.8; color: #444; }
+
+  .skill-badge { display: inline-block; background: #FBF0F5; color: #9E1E5A;
+                 border: 1px solid #ECCDD8; border-radius: 20px;
+                 padding: 6px 14px; font-size: 14px; font-weight: 700; }
+
+  .strength-list { list-style: none; }
+  .strength-list li { display: flex; align-items: flex-start; margin-bottom: 10px;
+                      font-size: 15px; color: #444; line-height: 1.6; }
+  .strength-list li:last-child { margin-bottom: 0; }
+  .strength-list li::before { content: "✦"; color: #C44080; margin-right: 10px;
+                               flex-shrink: 0; margin-top: 2px; font-size: 12px; }
+
+  .back-link { text-align: center; padding: 20px 0; }
+  .back-link a { color: #9E1E5A; text-decoration: none; font-size: 14px; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="back"><a href="index.html">← 資料一覧に戻る</a></div>
+  <div class="label">E — ESプロフィール集</div>
+  <h1>新卒内定者<br>エントリーシート集</h1>
+  <div class="sub">株式会社ラヴィール 2030年度</div>
+</div>
+
+<div class="nav-tabs">
+  <button class="tab-btn active" onclick="showPerson(0)">No.1 さくら</button>
+  <button class="tab-btn" onclick="showPerson(1)">No.2 みなみ</button>
+  <button class="tab-btn" onclick="showPerson(2)">No.3 はな</button>
+  <button class="tab-btn" onclick="showPerson(3)">No.4 こと</button>
+  <button class="tab-btn" onclick="showPerson(4)">No.5 蓮</button>
+</div>
+
+<div class="container">
+
+  <!-- No.1 中村さくら -->
+  <div class="person-panel active" id="person-0">
+    <div class="hero-card">
+      <div class="hero-no">No.1</div>
+      <div class="hero-name">中村 さくら</div>
+      <div class="hero-school">大和女子短期大学<br>観光ビジネス学科</div>
+      <div class="hero-tag">場の空気を読む気遣いの人</div>
+      <div class="hero-age">20歳</div>
+    </div>
+    <div class="section">
+      <h3>🏅 注目スキル</h3>
+      <div class="skill-badge">秘書検定2級</div>
+    </div>
+    <div class="section">
+      <h3>📖 学生時代の成果</h3>
+      <p>ウェディング会場でのサービス補助アルバイト（1年半）で、新郎新婦様から「さくらさんが声をかけてくれたから笑顔で入場できた」とお手紙をいただいた。</p>
+    </div>
+    <div class="section">
+      <h3>💪 強み</h3>
+      <ul class="strength-list">
+        <li>相手が求めていることを察して先回りできる力</li>
+        <li>笑顔と丁寧な言葉遣い</li>
+      </ul>
+    </div>
+    <div class="section">
+      <h3>🎯 志望動機・将来像</h3>
+      <p>販売・接客の現場から始め、将来はコーディネートや商品提案を通じてお客様の生活を豊かにする人材になりたい。</p>
+    </div>
+  </div>
+
+  <!-- No.2 田中みなみ -->
+  <div class="person-panel" id="person-1">
+    <div class="hero-card">
+      <div class="hero-no">No.2</div>
+      <div class="hero-name">田中 みなみ</div>
+      <div class="hero-school">関西文化短期大学<br>人文学科</div>
+      <div class="hero-tag">几帳面・ミスゼロの正確さ</div>
+      <div class="hero-age">20歳</div>
+    </div>
+    <div class="section">
+      <h3>🏅 注目スキル</h3>
+      <div class="skill-badge">MOS（Word・Excel）</div>&nbsp;
+      <div class="skill-badge">医療事務</div>
+    </div>
+    <div class="section">
+      <h3>📖 学生時代の成果</h3>
+      <p>調剤薬局のレセプト補助で、ミス防止のチェックリストを作成。1年間で記入漏れのミスはゼロに。そのリストが店全体で使われるようになった。</p>
+    </div>
+    <div class="section">
+      <h3>💪 強み</h3>
+      <ul class="strength-list">
+        <li>正確さと几帳面さ</li>
+        <li>MOSを活かしたWord・Excel操作</li>
+        <li>専門的なビジネス文書の作成</li>
+      </ul>
+    </div>
+    <div class="section">
+      <h3>🎯 志望動機・将来像</h3>
+      <p>経理・財務や総務・人事といったバックオフィス業務で、正確さを活かして会社を支えたい。</p>
+    </div>
+  </div>
+
+  <!-- No.3 山口はな -->
+  <div class="person-panel" id="person-2">
+    <div class="hero-card">
+      <div class="hero-no">No.3</div>
+      <div class="hero-name">山口 はな</div>
+      <div class="hero-school">近畿総合福祉短期大学<br>社会福祉学科</div>
+      <div class="hero-tag">聞く力・傾聴のプロ</div>
+      <div class="hero-age">20歳</div>
+    </div>
+    <div class="section">
+      <h3>🏅 注目スキル</h3>
+      <div class="skill-badge">介護職員初任者研修</div>
+    </div>
+    <div class="section">
+      <h3>📖 学生時代の成果</h3>
+      <p>地域の子育て広場に毎週ボランティア参加（2年間、一度も休まず）。「ただそこにいて、話を聞く」ことの大切さを学んだ。</p>
+    </div>
+    <div class="section">
+      <h3>💪 強み</h3>
+      <ul class="strength-list">
+        <li>聞く力・傾聴力</li>
+        <li>相手が話したいことを引き出しながら寄り添う姿勢</li>
+        <li>人を支える継続力（2年間無欠席）</li>
+      </ul>
+    </div>
+    <div class="section">
+      <h3>🎯 志望動機・将来像</h3>
+      <p>カスタマーサポートや総務・人事部門でお客様や社員に向き合い、その声を組織に活かしたい。</p>
+    </div>
+  </div>
+
+  <!-- No.4 西川こと -->
+  <div class="person-panel" id="person-3">
+    <div class="hero-card">
+      <div class="hero-no">No.4</div>
+      <div class="hero-name">西川 こと</div>
+      <div class="hero-school">京都文化学園短期大学<br>文化表現学科</div>
+      <div class="hero-tag">デザインセンス◎ / 空間を見る目</div>
+      <div class="hero-age">20歳</div>
+    </div>
+    <div class="section">
+      <h3>🏅 注目スキル</h3>
+      <div class="skill-badge">色彩検定2級</div>
+    </div>
+    <div class="section">
+      <h3>📖 学生時代の成果</h3>
+      <p>「一人暮らしをはじめる20代女性」をテーマに部屋設計。教員から「商品化できるレベル」と評価され学内展示会に選出。InstagramでフォロワーÑが1,400人以上に。</p>
+    </div>
+    <div class="section">
+      <h3>💪 強み</h3>
+      <ul class="strength-list">
+        <li>空間を見る目とデザインセンス</li>
+        <li>色・形・素材の組み合わせの知識</li>
+        <li>ビジュアル表現力・SNS発信力</li>
+      </ul>
+    </div>
+    <div class="section">
+      <h3>🎯 志望動機・将来像</h3>
+      <p>ECサイトや広報・ブランドコミュニケーション部門で、ビジュアル表現を通じてお客様の「欲しい」気持ちを引き出したい。</p>
+    </div>
+  </div>
+
+  <!-- No.5 田村蓮 -->
+  <div class="person-panel" id="person-4">
+    <div class="hero-card">
+      <div class="hero-no">No.5</div>
+      <div class="hero-name">田村 蓮</div>
+      <div class="hero-school">摂津ビジネス短期大学<br>経営学科</div>
+      <div class="hero-tag">行動力◎ / SNS巧み</div>
+      <div class="hero-age">20歳</div>
+    </div>
+    <div class="section">
+      <h3>🏅 注目スキル</h3>
+      <div class="skill-badge">販売士3級</div>
+    </div>
+    <div class="section">
+      <h3>📖 学生時代の成果</h3>
+      <p>学祭実行委員として飲食ブースを企画。Instagram告知・写真撮影・デザイン・文章作成をすべて担当し、来場者を前年比1.3倍に達成した。</p>
+    </div>
+    <div class="section">
+      <h3>💪 強み</h3>
+      <ul class="strength-list">
+        <li>アイデアをすぐ形にする行動力</li>
+        <li>場を盛り上げる提案力</li>
+        <li>デジタル情報発信（SNS・デザイン・撮影）</li>
+      </ul>
+    </div>
+    <div class="section">
+      <h3>🎯 志望動機・将来像</h3>
+      <p>EC・デジタル事業部や法人営業部で、SNSと販売知識を活かして、デジタルとリアルの両面からアパレルの魅力を届けたい。</p>
+    </div>
+  </div>
+
+  <div class="back-link"><a href="index.html">← 資料一覧に戻る</a></div>
+</div>
+
+<script>
+function showPerson(index) {
+  document.querySelectorAll('.person-panel').forEach((p, i) => {
+    p.classList.toggle('active', i === index);
+  });
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', i === index);
+  });
+}
+</script>
+
+</body>
+</html>
