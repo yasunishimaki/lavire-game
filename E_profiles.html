@@ -3,71 +3,102 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ESプロフィール集｜配属決定ゲーム</title>
+<title>ESプロフィール集｜LAVIRE</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-         background: #FBF4F7; color: #333; }
-  .header { background: linear-gradient(135deg, #9E1E5A, #C44080);
-             color: white; padding: 20px 16px 16px; }
-  .header .back a { color: white; text-decoration: none; font-size: 13px; opacity: 0.8; }
-  .header .label { font-size: 11px; background: rgba(255,255,255,0.25);
-                   display: inline-block; padding: 3px 10px; border-radius: 20px;
-                   margin: 10px 0 8px; }
-  .header h1 { font-size: 22px; font-weight: 700; line-height: 1.3; }
-  .header .sub { font-size: 13px; opacity: 0.8; margin-top: 6px; }
+  :root{--bg:#F8F6F3;--white:#FFF;--black:#1C1A18;--gold:#BF9E78;--rose:#C4849A;
+        --text:#3A3835;--muted:#8A8582;--border:#E5DDD5;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP',sans-serif;
+       background:var(--bg);color:var(--text);}
 
-  .nav-tabs { display: flex; background: #F0E0EA; overflow-x: auto;
-              scrollbar-width: none; border-bottom: 2px solid #E0C0D0; }
-  .nav-tabs::-webkit-scrollbar { display: none; }
-  .tab-btn { flex-shrink: 0; padding: 12px 16px; background: none; border: none;
-             font-size: 14px; color: #888; cursor: pointer; white-space: nowrap;
-             border-bottom: 3px solid transparent; margin-bottom: -2px;
-             font-family: inherit; font-weight: 600; }
-  .tab-btn.active { color: #9E1E5A; border-bottom-color: #9E1E5A; background: white; }
+  .header{background:var(--black);color:white;padding:24px 20px 20px;position:relative;overflow:hidden;}
+  .header::before{content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;
+    border:1px solid rgba(191,158,120,0.2);border-radius:50%;}
+  .back a{color:var(--gold);text-decoration:none;font-size:12px;letter-spacing:1px;}
+  .label{font-size:10px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin:12px 0 8px;}
+  .header h1{font-size:22px;font-weight:300;line-height:1.4;letter-spacing:1px;}
+  .header h1 strong{font-weight:700;}
+  .header .sub{font-size:11px;color:rgba(255,255,255,0.4);margin-top:6px;letter-spacing:1px;}
 
-  .container { max-width: 500px; margin: 0 auto; padding: 16px; }
-  .person-panel { display: none; }
-  .person-panel.active { display: block; }
+  .nav-tabs{display:flex;background:#111;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid #2A2825;}
+  .nav-tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{flex-shrink:0;padding:14px 18px;background:none;border:none;font-size:13px;
+           color:rgba(255,255,255,0.4);cursor:pointer;white-space:nowrap;letter-spacing:0.5px;
+           border-bottom:2px solid transparent;margin-bottom:-1px;font-family:inherit;
+           transition:color .2s,border-color .2s;}
+  .tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
 
-  .hero-card { background: linear-gradient(135deg, #9E1E5A, #C44080);
-               color: white; border-radius: 16px; padding: 20px;
-               margin-bottom: 14px; }
-  .hero-no { font-size: 12px; opacity: 0.8; margin-bottom: 6px; font-weight: 600; }
-  .hero-name { font-size: 26px; font-weight: 700; margin-bottom: 4px; }
-  .hero-school { font-size: 13px; opacity: 0.85; margin-bottom: 14px; line-height: 1.5; }
-  .hero-tag { display: inline-block; background: rgba(255,255,255,0.25);
-              border-radius: 20px; padding: 6px 14px; font-size: 14px; font-weight: 600; }
-  .hero-age { font-size: 13px; opacity: 0.75; margin-top: 10px; }
+  .container{max-width:520px;margin:0 auto;padding:20px 16px 40px;}
+  .person-panel{display:none;}
+  .person-panel.active{display:block;}
 
-  .section { background: white; border-radius: 14px; padding: 18px;
-             margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-  .section h3 { font-size: 14px; color: #9E1E5A; font-weight: 700;
-                margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-  .section p { font-size: 15px; line-height: 1.8; color: #444; }
+  /* ─── HERO PROFILE ─── */
+  .profile-hero{border-radius:20px;overflow:hidden;margin-bottom:16px;
+                box-shadow:0 4px 24px rgba(0,0,0,0.08);}
+  .profile-hero-top{padding:24px 20px 20px;display:flex;align-items:flex-end;gap:16px;}
+  .avatar-wrap{flex-shrink:0;}
+  .profile-info{flex:1;}
+  .p-no{font-size:10px;letter-spacing:3px;font-weight:700;opacity:0.7;margin-bottom:6px;}
+  .p-name{font-size:28px;font-weight:700;line-height:1.1;margin-bottom:4px;}
+  .p-school{font-size:12px;opacity:0.75;line-height:1.5;}
+  .p-age{font-size:11px;opacity:0.55;margin-top:4px;}
+  .profile-hero-bottom{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;
+                       border-top:1px solid rgba(255,255,255,0.15);}
+  .p-keyword{font-size:14px;font-weight:600;color:white;}
 
-  .skill-badge { display: inline-block; background: #FBF0F5; color: #9E1E5A;
-                 border: 1px solid #ECCDD8; border-radius: 20px;
-                 padding: 6px 14px; font-size: 14px; font-weight: 700; }
+  /* ─── SECTION CARD ─── */
+  .sec-card{background:var(--white);border-radius:16px;padding:20px;
+            margin-bottom:12px;box-shadow:0 2px 16px rgba(0,0,0,0.05);}
+  .sec-card h3{font-size:10px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;
+               font-weight:700;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+  .sec-card p{font-size:15px;line-height:1.95;color:var(--text);}
+  .sec-card p + p{margin-top:14px;}
 
-  .strength-list { list-style: none; }
-  .strength-list li { display: flex; align-items: flex-start; margin-bottom: 10px;
-                      font-size: 15px; color: #444; line-height: 1.6; }
-  .strength-list li:last-child { margin-bottom: 0; }
-  .strength-list li::before { content: "✦"; color: #C44080; margin-right: 10px;
-                               flex-shrink: 0; margin-top: 2px; font-size: 12px; }
+  .skill-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .skill-pill{background:var(--bg);border:1px solid var(--border);border-radius:20px;
+              padding:7px 14px;font-size:13px;color:var(--text);font-weight:600;}
 
-  .back-link { text-align: center; padding: 20px 0; }
-  .back-link a { color: #9E1E5A; text-decoration: none; font-size: 14px; font-weight: 600; }
+  .hobby-text{font-size:14px;color:var(--muted);line-height:1.7;
+              background:var(--bg);border-radius:10px;padding:12px 14px;}
+
+  .back-link{text-align:center;padding:20px 0;}
+  .back-link a{color:var(--muted);text-decoration:none;font-size:12px;letter-spacing:2px;
+               border-bottom:1px solid var(--border);padding-bottom:2px;}
+
+  /* ─── COLOR THEMES ─── */
+  .theme-sakura .profile-hero-top{background:linear-gradient(135deg,#7A3550,#C4849A);}
+  .theme-sakura .profile-hero-bottom{background:#7A3550;}
+  .theme-sakura .p-no,.theme-sakura .p-school,.theme-sakura .p-age{color:white;}
+  .theme-sakura .p-name{color:white;}
+
+  .theme-minami .profile-hero-top{background:linear-gradient(135deg,#1E3A5A,#4A7AAD);}
+  .theme-minami .profile-hero-bottom{background:#1E3A5A;}
+  .theme-minami .p-no,.theme-minami .p-school,.theme-minami .p-age{color:white;}
+  .theme-minami .p-name{color:white;}
+
+  .theme-hana .profile-hero-top{background:linear-gradient(135deg,#3A6050,#7DA08A);}
+  .theme-hana .profile-hero-bottom{background:#3A6050;}
+  .theme-hana .p-no,.theme-hana .p-school,.theme-hana .p-age{color:white;}
+  .theme-hana .p-name{color:white;}
+
+  .theme-koto .profile-hero-top{background:linear-gradient(135deg,#5A3A7A,#9A70C0);}
+  .theme-koto .profile-hero-bottom{background:#5A3A7A;}
+  .theme-koto .p-no,.theme-koto .p-school,.theme-koto .p-age{color:white;}
+  .theme-koto .p-name{color:white;}
+
+  .theme-ren .profile-hero-top{background:linear-gradient(135deg,#7A3E1E,#C07840);}
+  .theme-ren .profile-hero-bottom{background:#7A3E1E;}
+  .theme-ren .p-no,.theme-ren .p-school,.theme-ren .p-age{color:white;}
+  .theme-ren .p-name{color:white;}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="back"><a href="index.html">← 資料一覧に戻る</a></div>
-  <div class="label">E — ESプロフィール集</div>
-  <h1>新卒内定者<br>エントリーシート集</h1>
-  <div class="sub">株式会社ラヴィール 2030年度</div>
+  <div class="back"><a href="index.html">← BACK</a></div>
+  <div class="label">ES Profiles — E</div>
+  <h1><strong>新卒内定者</strong><br>エントリーシート集</h1>
+  <div class="sub">LAVIRE Co., Ltd. — 2030 Confidential</div>
 </div>
 
 <div class="nav-tabs">
@@ -80,174 +111,432 @@
 
 <div class="container">
 
-  <!-- No.1 中村さくら -->
-  <div class="person-panel active" id="person-0">
-    <div class="hero-card">
-      <div class="hero-no">No.1</div>
-      <div class="hero-name">中村 さくら</div>
-      <div class="hero-school">大和女子短期大学<br>観光ビジネス学科</div>
-      <div class="hero-tag">場の空気を読む気遣いの人</div>
-      <div class="hero-age">20歳</div>
+<!-- ══════════════════ No.1 さくら ══════════════════ -->
+<div class="person-panel active" id="person-0">
+  <div class="profile-hero theme-sakura">
+    <div class="profile-hero-top">
+      <div class="avatar-wrap">
+        <!-- さくら illustration -->
+        <svg viewBox="0 0 110 140" width="100" height="128" xmlns="http://www.w3.org/2000/svg">
+          <!-- dress body -->
+          <path d="M20,140 L20,100 Q55,115 90,100 L90,140 Z" fill="#E8A0B0"/>
+          <path d="M38,100 Q55,110 72,100 L68,88 Q55,96 42,88 Z" fill="#F5C8D5"/>
+          <!-- white collar -->
+          <path d="M44,88 Q55,98 66,88 Q60,82 55,84 Q50,82 44,88 Z" fill="white" opacity="0.9"/>
+          <!-- neck -->
+          <rect x="48" y="76" width="14" height="16" rx="4" fill="#F2C4A0"/>
+          <!-- head -->
+          <ellipse cx="55" cy="62" rx="28" ry="32" fill="#F2C4A0"/>
+          <!-- hair back -->
+          <ellipse cx="55" cy="38" rx="28" ry="18" fill="#4A2E20"/>
+          <!-- hair sides -->
+          <ellipse cx="28" cy="58" rx="8" ry="16" fill="#4A2E20"/>
+          <ellipse cx="82" cy="58" rx="8" ry="16" fill="#4A2E20"/>
+          <!-- bun -->
+          <circle cx="55" cy="26" r="12" fill="#4A2E20"/>
+          <circle cx="55" cy="22" r="4" fill="#6A4030"/>
+          <!-- bun detail -->
+          <ellipse cx="48" cy="24" rx="4" ry="2" fill="#6A4030"/>
+          <ellipse cx="62" cy="24" rx="4" ry="2" fill="#6A4030"/>
+          <!-- eyes white -->
+          <ellipse cx="44" cy="62" rx="6" ry="7" fill="white"/>
+          <ellipse cx="66" cy="62" rx="6" ry="7" fill="white"/>
+          <!-- iris -->
+          <circle cx="44" cy="63" r="4.5" fill="#2A1A10"/>
+          <circle cx="66" cy="63" r="4.5" fill="#2A1A10"/>
+          <!-- highlight -->
+          <circle cx="46" cy="61" r="1.8" fill="white"/>
+          <circle cx="68" cy="61" r="1.8" fill="white"/>
+          <!-- eyebrows -->
+          <path d="M37,54 Q44,50 51,54" stroke="#4A2E20" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          <path d="M59,54 Q66,50 73,54" stroke="#4A2E20" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          <!-- smile -->
+          <path d="M44,76 Q55,86 66,76" stroke="#C97B8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- blush -->
+          <ellipse cx="34" cy="72" rx="8" ry="5" fill="#FFB8C8" opacity="0.45"/>
+          <ellipse cx="76" cy="72" rx="8" ry="5" fill="#FFB8C8" opacity="0.45"/>
+          <!-- eyelashes -->
+          <path d="M38,56 L36,53" stroke="#4A2E20" stroke-width="1.2"/>
+          <path d="M60,56 L58,53" stroke="#4A2E20" stroke-width="1.2"/>
+          <path d="M72,56 L74,53" stroke="#4A2E20" stroke-width="1.2"/>
+        </svg>
+      </div>
+      <div class="profile-info">
+        <div class="p-no">CANDIDATE No.1</div>
+        <div class="p-name">中村 さくら</div>
+        <div class="p-school">大和女子短期大学<br>観光ビジネス学科</div>
+        <div class="p-age">20歳</div>
+      </div>
     </div>
-    <div class="section">
-      <h3>🏅 注目スキル</h3>
-      <div class="skill-badge">秘書検定2級</div>
-    </div>
-    <div class="section">
-      <h3>📖 学生時代の成果</h3>
-      <p>ウェディング会場でのサービス補助アルバイト（1年半）で、新郎新婦様から「さくらさんが声をかけてくれたから笑顔で入場できた」とお手紙をいただいた。</p>
-    </div>
-    <div class="section">
-      <h3>💪 強み</h3>
-      <ul class="strength-list">
-        <li>相手が求めていることを察して先回りできる力</li>
-        <li>笑顔と丁寧な言葉遣い</li>
-      </ul>
-    </div>
-    <div class="section">
-      <h3>🎯 志望動機・将来像</h3>
-      <p>販売・接客の現場から始め、将来はコーディネートや商品提案を通じてお客様の生活を豊かにする人材になりたい。</p>
-    </div>
-  </div>
-
-  <!-- No.2 田中みなみ -->
-  <div class="person-panel" id="person-1">
-    <div class="hero-card">
-      <div class="hero-no">No.2</div>
-      <div class="hero-name">田中 みなみ</div>
-      <div class="hero-school">関西文化短期大学<br>人文学科</div>
-      <div class="hero-tag">几帳面・ミスゼロの正確さ</div>
-      <div class="hero-age">20歳</div>
-    </div>
-    <div class="section">
-      <h3>🏅 注目スキル</h3>
-      <div class="skill-badge">MOS（Word・Excel）</div>&nbsp;
-      <div class="skill-badge">医療事務</div>
-    </div>
-    <div class="section">
-      <h3>📖 学生時代の成果</h3>
-      <p>調剤薬局のレセプト補助で、ミス防止のチェックリストを作成。1年間で記入漏れのミスはゼロに。そのリストが店全体で使われるようになった。</p>
-    </div>
-    <div class="section">
-      <h3>💪 強み</h3>
-      <ul class="strength-list">
-        <li>正確さと几帳面さ</li>
-        <li>MOSを活かしたWord・Excel操作</li>
-        <li>専門的なビジネス文書の作成</li>
-      </ul>
-    </div>
-    <div class="section">
-      <h3>🎯 志望動機・将来像</h3>
-      <p>経理・財務や総務・人事といったバックオフィス業務で、正確さを活かして会社を支えたい。</p>
-    </div>
-  </div>
-
-  <!-- No.3 山口はな -->
-  <div class="person-panel" id="person-2">
-    <div class="hero-card">
-      <div class="hero-no">No.3</div>
-      <div class="hero-name">山口 はな</div>
-      <div class="hero-school">近畿総合福祉短期大学<br>社会福祉学科</div>
-      <div class="hero-tag">聞く力・傾聴のプロ</div>
-      <div class="hero-age">20歳</div>
-    </div>
-    <div class="section">
-      <h3>🏅 注目スキル</h3>
-      <div class="skill-badge">介護職員初任者研修</div>
-    </div>
-    <div class="section">
-      <h3>📖 学生時代の成果</h3>
-      <p>地域の子育て広場に毎週ボランティア参加（2年間、一度も休まず）。「ただそこにいて、話を聞く」ことの大切さを学んだ。</p>
-    </div>
-    <div class="section">
-      <h3>💪 強み</h3>
-      <ul class="strength-list">
-        <li>聞く力・傾聴力</li>
-        <li>相手が話したいことを引き出しながら寄り添う姿勢</li>
-        <li>人を支える継続力（2年間無欠席）</li>
-      </ul>
-    </div>
-    <div class="section">
-      <h3>🎯 志望動機・将来像</h3>
-      <p>カスタマーサポートや総務・人事部門でお客様や社員に向き合い、その声を組織に活かしたい。</p>
+    <div class="profile-hero-bottom">
+      <span class="p-keyword">💬 場の空気を読む気遣いの人</span>
     </div>
   </div>
 
-  <!-- No.4 西川こと -->
-  <div class="person-panel" id="person-3">
-    <div class="hero-card">
-      <div class="hero-no">No.4</div>
-      <div class="hero-name">西川 こと</div>
-      <div class="hero-school">京都文化学園短期大学<br>文化表現学科</div>
-      <div class="hero-tag">デザインセンス◎ / 空間を見る目</div>
-      <div class="hero-age">20歳</div>
+  <div class="sec-card">
+    <h3>Skills &amp; Qualifications</h3>
+    <div class="skill-row">
+      <span class="skill-pill">秘書検定2級</span>
+      <span class="skill-pill">普通自動車免許（取得中）</span>
     </div>
-    <div class="section">
-      <h3>🏅 注目スキル</h3>
-      <div class="skill-badge">色彩検定2級</div>
+    <div class="hobby-text" style="margin-top:12px">🌸 料理・カフェ巡り・映画鑑賞・季節のお花を飾ること</div>
+  </div>
+  <div class="sec-card">
+    <h3>Q1. ガクチカ</h3>
+    <p>大学1年の秋から、近隣のウェディング会場でサービス補助アルバイトを始めました。担当業務はゲスト誘導・テーブルセッティング・装花補助など多岐にわたり、結婚式の日はお客様にとって「一生に一度の特別な日」であることを常に意識して動きました。</p>
+    <p>あるとき、式直前に新婦様が緊張でうまく笑えなくなってしまう場面がありました。私はその場で「大丈夫ですよ、さっきロビーで待っていたゲストの方々がみんな楽しそうにお話していました」と声をかけ、ゆっくり深呼吸をご一緒しました。式後、新郎新婦様から「さくらさんが声をかけてくれたから笑顔で入場できた」とお手紙をいただきました。この経験が、場の空気を読んで先回りする大切さを教えてくれました。</p>
+  </div>
+  <div class="sec-card">
+    <h3>Q2. 自己PR</h3>
+    <p>私の強みは「相手が求めていることを察して、先回りできる力」です。ウェディング会場でのアルバイトを通じ、新郎新婦様やゲストの表情・仕草を観察しながら、言葉にされる前に行動する習慣が身につきました。</p>
+    <p>また、笑顔と丁寧な言葉遣いで、初めてお会いする方にも安心感を与えられると自負しています。秘書検定の学習を通じて、ビジネスマナーの基礎も整えました。「この人がいると場が落ち着く」と感じてもらえる存在を目指しています。</p>
+  </div>
+  <div class="sec-card">
+    <h3>Q3. 志望動機</h3>
+    <p>御社のブランドコンセプト「着る人の日常をデザインする」という言葉に、強く惹かれました。ウェディング会場でのアルバイトを通じ、「その人にとっての特別な瞬間を支える」ことへのやりがいを実感してきました。</p>
+    <p>アパレルも、日常の中でその人の気持ちを支える力があると思います。お客様の笑顔を引き出す仕事がしたい、そのためにまず人と向き合う力を磨きたいと考え、御社を志望しました。販売・接客の現場から始め、将来はコーディネートや商品提案を通じてお客様の生活を豊かにする人材になりたいと考えています。</p>
+  </div>
+</div>
+
+<!-- ══════════════════ No.2 みなみ ══════════════════ -->
+<div class="person-panel" id="person-1">
+  <div class="profile-hero theme-minami">
+    <div class="profile-hero-top">
+      <div class="avatar-wrap">
+        <!-- みなみ illustration -->
+        <svg viewBox="0 0 110 140" width="100" height="128" xmlns="http://www.w3.org/2000/svg">
+          <!-- blouse body -->
+          <path d="M18,140 L18,96 Q55,112 92,96 L92,140 Z" fill="#2A5A8A"/>
+          <!-- collar line -->
+          <path d="M42,96 L55,106 L68,96" stroke="#4A8ABF" stroke-width="1.5" fill="none"/>
+          <!-- button line -->
+          <line x1="55" y1="106" x2="55" y2="140" stroke="#4A8ABF" stroke-width="1" opacity="0.5"/>
+          <circle cx="55" cy="114" r="2" fill="#4A8ABF" opacity="0.7"/>
+          <circle cx="55" cy="124" r="2" fill="#4A8ABF" opacity="0.7"/>
+          <!-- neck -->
+          <rect x="48" y="78" width="14" height="20" rx="4" fill="#F2C4A0"/>
+          <!-- head -->
+          <ellipse cx="55" cy="62" rx="28" ry="32" fill="#F2C4A0"/>
+          <!-- hair - bob, dark -->
+          <path d="M27,50 Q28,80 34,88 Q55,96 76,88 Q82,80 83,50 Q55,28 27,50 Z" fill="#1A1010"/>
+          <!-- hair top -->
+          <ellipse cx="55" cy="36" rx="28" ry="14" fill="#1A1010"/>
+          <!-- glasses frame -->
+          <rect x="36" y="57" width="15" height="11" rx="5" fill="none" stroke="#8AB0D0" stroke-width="2"/>
+          <rect x="59" y="57" width="15" height="11" rx="5" fill="none" stroke="#8AB0D0" stroke-width="2"/>
+          <line x1="51" y1="62" x2="59" y2="62" stroke="#8AB0D0" stroke-width="1.5"/>
+          <line x1="36" y1="62" x2="30" y2="60" stroke="#8AB0D0" stroke-width="1.5"/>
+          <line x1="74" y1="62" x2="80" y2="60" stroke="#8AB0D0" stroke-width="1.5"/>
+          <!-- eyes behind glasses -->
+          <circle cx="43" cy="63" r="3.5" fill="#1A1010"/>
+          <circle cx="66" cy="63" r="3.5" fill="#1A1010"/>
+          <circle cx="44.5" cy="61.5" r="1.4" fill="white"/>
+          <circle cx="67.5" cy="61.5" r="1.4" fill="white"/>
+          <!-- eyebrows -->
+          <path d="M37,55 Q44,52 50,55" stroke="#1A1010" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          <path d="M60,55 Q66,52 73,55" stroke="#1A1010" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          <!-- smile - slight -->
+          <path d="M46,77 Q55,84 64,77" stroke="#C07080" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          <!-- blush subtle -->
+          <ellipse cx="35" cy="73" rx="7" ry="4" fill="#FFB8C8" opacity="0.3"/>
+          <ellipse cx="75" cy="73" rx="7" ry="4" fill="#FFB8C8" opacity="0.3"/>
+        </svg>
+      </div>
+      <div class="profile-info">
+        <div class="p-no">CANDIDATE No.2</div>
+        <div class="p-name">田中 みなみ</div>
+        <div class="p-school">関西文化短期大学<br>人文学科</div>
+        <div class="p-age">20歳</div>
+      </div>
     </div>
-    <div class="section">
-      <h3>📖 学生時代の成果</h3>
-      <p>「一人暮らしをはじめる20代女性」をテーマに部屋設計。教員から「商品化できるレベル」と評価され学内展示会に選出。InstagramでフォロワーÑが1,400人以上に。</p>
-    </div>
-    <div class="section">
-      <h3>💪 強み</h3>
-      <ul class="strength-list">
-        <li>空間を見る目とデザインセンス</li>
-        <li>色・形・素材の組み合わせの知識</li>
-        <li>ビジュアル表現力・SNS発信力</li>
-      </ul>
-    </div>
-    <div class="section">
-      <h3>🎯 志望動機・将来像</h3>
-      <p>ECサイトや広報・ブランドコミュニケーション部門で、ビジュアル表現を通じてお客様の「欲しい」気持ちを引き出したい。</p>
+    <div class="profile-hero-bottom">
+      <span class="p-keyword">💬 几帳面・ミスゼロの正確さ</span>
     </div>
   </div>
 
-  <!-- No.5 田村蓮 -->
-  <div class="person-panel" id="person-4">
-    <div class="hero-card">
-      <div class="hero-no">No.5</div>
-      <div class="hero-name">田村 蓮</div>
-      <div class="hero-school">摂津ビジネス短期大学<br>経営学科</div>
-      <div class="hero-tag">行動力◎ / SNS巧み</div>
-      <div class="hero-age">20歳</div>
+  <div class="sec-card">
+    <h3>Skills &amp; Qualifications</h3>
+    <div class="skill-row">
+      <span class="skill-pill">MOS（Word・Excel）</span>
+      <span class="skill-pill">医療事務認定実務者</span>
+      <span class="skill-pill">秘書検定3級</span>
+      <span class="skill-pill">普通自動車免許（取得中）</span>
     </div>
-    <div class="section">
-      <h3>🏅 注目スキル</h3>
-      <div class="skill-badge">販売士3級</div>
+    <div class="hobby-text" style="margin-top:12px">📚 読書・手帳デコレーション・料理・刺繍</div>
+  </div>
+  <div class="sec-card">
+    <h3>Q1. ガクチカ</h3>
+    <p>大学1年から調剤薬局の受付・レセプト補助アルバイトを続けています。最初の数ヶ月、先輩から「確認作業が抜けることがある」と指摘を受けました。悔しくて、自分でミス防止のチェックリストを作成し、毎日の業務に組み込んだところ、その後1年間で記入漏れのミスはゼロになりました。</p>
+    <p>さらに、新しくアルバイトが入ってきたときにそのチェックリストを渡したところ、店長から「みなみさんのリストを全員が使うようになった。本当に助かっています」と声をかけていただきました。自分の工夫が組織全体に役立てられた経験として、今も誇りに思っています。</p>
+  </div>
+  <div class="sec-card">
+    <h3>Q2. 自己PR</h3>
+    <p>私の強みは「正確さと几帳面さ」です。ミスを防ぐために自分でチェックリストを作成し、組織全体に活用してもらった経験に自信があります。MOSの資格を活かしたWord・Excelの操作も得意としており、丁寧な書類作成ができます。</p>
+    <p>医療事務の資格取得を通じ、専門的なビジネス文書の作成や数値の正確な管理にも取り組んできました。「この人に任せれば大丈夫」と信頼される事務スタッフを目指しています。一方で、初めての環境や人前に出る機会が苦手なため、慣れるまで時間がかかることは自覚しています。</p>
+  </div>
+  <div class="sec-card">
+    <h3>Q3. 志望動機</h3>
+    <p>御社を志望した理由は「正確な仕事が直接、会社の信頼につながる職場で働きたい」という想いからです。経理・財務や総務・人事といったバックオフィス業務では、一つのミスが取引先や社員に影響を与えます。だからこそ、几帳面さと正確さを活かした仕事ができると考えました。</p>
+    <p>アパレル業界に興味を持ったのは、「好きなものを仕事の近くに置きたい」という気持ちからです。ファッションが好きなわけではありませんが、御社のように「着る人の日常を支える」仕事の裏側を支えたいと思っています。将来は、経理・財務分野でキャリアを積み、会社の財務基盤を支える存在になりたいと考えています。</p>
+  </div>
+</div>
+
+<!-- ══════════════════ No.3 はな ══════════════════ -->
+<div class="person-panel" id="person-2">
+  <div class="profile-hero theme-hana">
+    <div class="profile-hero-top">
+      <div class="avatar-wrap">
+        <!-- はな illustration -->
+        <svg viewBox="0 0 110 140" width="100" height="128" xmlns="http://www.w3.org/2000/svg">
+          <!-- cardigan body -->
+          <path d="M16,140 L16,94 Q55,112 94,94 L94,140 Z" fill="#6A9880"/>
+          <!-- inner shirt -->
+          <path d="M42,94 Q55,104 68,94 L68,140 L42,140 Z" fill="#C8E0D0"/>
+          <!-- lapel -->
+          <path d="M42,94 Q48,100 55,103 Q62,100 68,94" stroke="#4A7860" stroke-width="1" fill="none"/>
+          <!-- neck -->
+          <rect x="48" y="76" width="14" height="20" rx="4" fill="#F2C4A0"/>
+          <!-- head -->
+          <ellipse cx="55" cy="60" rx="28" ry="32" fill="#F2C4A0"/>
+          <!-- hair - wavy, warm brown -->
+          <path d="M27,46 Q22,68 26,86 Q35,96 42,92" fill="#7A4A28" stroke="none"/>
+          <path d="M83,46 Q88,68 84,86 Q75,96 68,92" fill="#7A4A28" stroke="none"/>
+          <ellipse cx="55" cy="34" rx="28" ry="15" fill="#7A4A28"/>
+          <!-- hair waves left -->
+          <path d="M26,70 Q22,78 27,82 Q24,86 26,90" stroke="#7A4A28" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <!-- hair waves right -->
+          <path d="M84,70 Q88,78 83,82 Q86,86 84,90" stroke="#7A4A28" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <!-- hair front strand -->
+          <path d="M40,36 Q36,48 38,58" stroke="#7A4A28" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <!-- eyes -->
+          <ellipse cx="44" cy="60" rx="6" ry="7" fill="white"/>
+          <ellipse cx="66" cy="60" rx="6" ry="7" fill="white"/>
+          <circle cx="44" cy="61" r="4.5" fill="#2A1A10"/>
+          <circle cx="66" cy="61" r="4.5" fill="#2A1A10"/>
+          <circle cx="45.5" cy="59.5" r="1.8" fill="white"/>
+          <circle cx="67.5" cy="59.5" r="1.8" fill="white"/>
+          <!-- eyebrows - gentle arc -->
+          <path d="M37,52 Q44,48 51,52" stroke="#7A4A28" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          <path d="M59,52 Q66,48 73,52" stroke="#7A4A28" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          <!-- gentle smile -->
+          <path d="M45,74 Q55,83 65,74" stroke="#B07080" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- blush warm -->
+          <ellipse cx="34" cy="70" rx="9" ry="6" fill="#FFC0A0" opacity="0.5"/>
+          <ellipse cx="76" cy="70" rx="9" ry="6" fill="#FFC0A0" opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="profile-info">
+        <div class="p-no">CANDIDATE No.3</div>
+        <div class="p-name">山口 はな</div>
+        <div class="p-school">近畿総合福祉短期大学<br>社会福祉学科</div>
+        <div class="p-age">20歳</div>
+      </div>
     </div>
-    <div class="section">
-      <h3>📖 学生時代の成果</h3>
-      <p>学祭実行委員として飲食ブースを企画。Instagram告知・写真撮影・デザイン・文章作成をすべて担当し、来場者を前年比1.3倍に達成した。</p>
-    </div>
-    <div class="section">
-      <h3>💪 強み</h3>
-      <ul class="strength-list">
-        <li>アイデアをすぐ形にする行動力</li>
-        <li>場を盛り上げる提案力</li>
-        <li>デジタル情報発信（SNS・デザイン・撮影）</li>
-      </ul>
-    </div>
-    <div class="section">
-      <h3>🎯 志望動機・将来像</h3>
-      <p>EC・デジタル事業部や法人営業部で、SNSと販売知識を活かして、デジタルとリアルの両面からアパレルの魅力を届けたい。</p>
+    <div class="profile-hero-bottom">
+      <span class="p-keyword">💬 聞く力・傾聴のプロ</span>
     </div>
   </div>
 
-  <div class="back-link"><a href="index.html">← 資料一覧に戻る</a></div>
+  <div class="sec-card">
+    <h3>Skills &amp; Qualifications</h3>
+    <div class="skill-row">
+      <span class="skill-pill">子育て支援員研修修了</span>
+      <span class="skill-pill">介護職員初任者研修修了</span>
+      <span class="skill-pill">普通自動車第一種運転免許</span>
+    </div>
+    <div class="hobby-text" style="margin-top:12px">🌿 折り紙・ガーデニング・ハンドメイド雑貨・子どもの本の読み聞かせ</div>
+  </div>
+  <div class="sec-card">
+    <h3>Q1. ガクチカ</h3>
+    <p>大学1年の春から、地域の子育て広場に毎週ボランティアスタッフとして参加しています。乳幼児のいる保護者が気軽に立ち寄れる場所として運営されており、私は主に来場者の傾聴役・子どもの見守り補助を担当しました。</p>
+    <p>最初は何を話せばいいかわからず、うまく寄り添えない自分に焦りを感じていました。でも「ただそこにいて、話を聞く」ことが最も大切だと気づいてから、保護者の方から「はなさんに話したらすっきりした」「また来週も来ます」と言っていただけるようになりました。2年間、一度も休まず参加した経験が、私の誇りです。</p>
+  </div>
+  <div class="sec-card">
+    <h3>Q2. 自己PR</h3>
+    <p>私の強みは「聞く力」です。子育て広場での2年間のボランティアを通じ、相手が話したいことを引き出しながら、判断や評価をせずに寄り添う姿勢を磨いてきました。</p>
+    <p>また、介護職員初任者研修の資格を通じ、サービスを受ける方の立場に立って考える視点も学びました。誰かが困っているときに自然と力になりたいと思える性格で、「困った人がいるとすぐ動く」とよく言われます。一方で、自分の意見を主張することが苦手なため、リーダーより「支える役」として組織に貢献したいと考えています。</p>
+  </div>
+  <div class="sec-card">
+    <h3>Q3. 志望動機</h3>
+    <p>御社のカスタマーサポートや総務・人事部門に関心があります。お客様や社員に対して丁寧に向き合い、その声を組織に活かしていく仕事が、私のこれまでの経験と重なるからです。</p>
+    <p>福祉の学びを通じて「人を支える仕事」の大切さを実感してきました。御社では、アパレルというファッションの世界に関わりながら、その裏側で人を支える役割を担いたいと考えています。最初は一つひとつのお客様対応から丁寧に積み上げ、将来は社員の働きやすさを支える人事の仕事にも挑戦したいと思っています。</p>
+  </div>
+</div>
+
+<!-- ══════════════════ No.4 こと ══════════════════ -->
+<div class="person-panel" id="person-3">
+  <div class="profile-hero theme-koto">
+    <div class="profile-hero-top">
+      <div class="avatar-wrap">
+        <!-- こと illustration -->
+        <svg viewBox="0 0 110 140" width="100" height="128" xmlns="http://www.w3.org/2000/svg">
+          <!-- artistic top -->
+          <path d="M16,140 L16,92 Q55,110 94,92 L94,140 Z" fill="#7A50AA"/>
+          <!-- pattern on top -->
+          <path d="M30,110 Q40,104 50,110 Q60,116 70,110 Q80,104 90,110" stroke="#9A70CA" stroke-width="1.5" fill="none"/>
+          <path d="M25,120 Q37,114 49,120 Q61,126 73,120 Q85,114 97,120" stroke="#9A70CA" stroke-width="1.5" fill="none"/>
+          <!-- scarf/accent -->
+          <path d="M44,92 Q55,100 66,92 Q63,96 55,100 Q47,96 44,92 Z" fill="#C8A0E0" opacity="0.7"/>
+          <!-- neck -->
+          <rect x="48" y="74" width="14" height="20" rx="4" fill="#F2C4A0"/>
+          <!-- head -->
+          <ellipse cx="55" cy="58" rx="28" ry="32" fill="#F2C4A0"/>
+          <!-- hair - loose chestnut, stylish -->
+          <path d="M27,42 Q20,65 24,90 Q30,98 36,94" fill="#8A5030" stroke="none"/>
+          <path d="M83,42 Q90,65 86,90 Q80,98 74,94" fill="#8A5030" stroke="none"/>
+          <ellipse cx="55" cy="32" rx="28" ry="14" fill="#8A5030"/>
+          <!-- side hair flowing -->
+          <path d="M27,55 Q20,70 24,84" stroke="#8A5030" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <path d="M83,55 Q90,70 86,84" stroke="#8A5030" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <!-- front highlight strand -->
+          <path d="M42,33 Q38,46 40,62" stroke="#B07840" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- eyes - slightly almond -->
+          <ellipse cx="44" cy="58" rx="7" ry="6" fill="white"/>
+          <ellipse cx="66" cy="58" rx="7" ry="6" fill="white"/>
+          <circle cx="45" cy="59" r="4.5" fill="#2A1A10"/>
+          <circle cx="67" cy="59" r="4.5" fill="#2A1A10"/>
+          <circle cx="46.5" cy="57.5" r="1.8" fill="white"/>
+          <circle cx="68.5" cy="57.5" r="1.8" fill="white"/>
+          <!-- arched brows -->
+          <path d="M37,50 Q45,45 52,50" stroke="#8A5030" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M58,50 Q66,45 73,50" stroke="#8A5030" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- thoughtful smile -->
+          <path d="M46,73 Q55,81 64,73" stroke="#A06080" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- blush -->
+          <ellipse cx="34" cy="68" rx="8" ry="5" fill="#E0B0D0" opacity="0.4"/>
+          <ellipse cx="76" cy="68" rx="8" ry="5" fill="#E0B0D0" opacity="0.4"/>
+        </svg>
+      </div>
+      <div class="profile-info">
+        <div class="p-no">CANDIDATE No.4</div>
+        <div class="p-name">西川 こと</div>
+        <div class="p-school">京都文化学園短期大学<br>文化表現学科</div>
+        <div class="p-age">20歳</div>
+      </div>
+    </div>
+    <div class="profile-hero-bottom">
+      <span class="p-keyword">💬 デザインセンス◎ / 空間を見る目</span>
+    </div>
+  </div>
+
+  <div class="sec-card">
+    <h3>Skills &amp; Qualifications</h3>
+    <div class="skill-row">
+      <span class="skill-pill">色彩検定2級</span>
+      <span class="skill-pill">インテリアプランナー資格</span>
+      <span class="skill-pill">普通自動車免許</span>
+    </div>
+    <div class="hobby-text" style="margin-top:12px">🎨 DIY・古道具屋めぐり・Instagramでのインテリア発信・雑貨づくり</div>
+  </div>
+  <div class="sec-card">
+    <h3>Q1. ガクチカ</h3>
+    <p>授業の空間演出課題で「一人暮らしをはじめる20代女性」をテーマに、部屋のコンセプト設計・カラープランニング・家具配置レイアウトを制作しました。「生活の中に自然素材を取り入れ、毎朝ほっとする部屋をつくる」というコンセプトで、色彩検定の知識を活用しながら色の組み合わせから小物の配置まで丁寧に設計しました。</p>
+    <p>完成した作品について教員から「商品化できるレベル」と評価をいただき、学内展示会の選出作品に選ばれました。また、Instagramで制作過程を発信したところ、フォロワー1,400人を超え、同世代から「参考にしています」というコメントが届くようになりました。</p>
+  </div>
+  <div class="sec-card">
+    <h3>Q2. 自己PR</h3>
+    <p>私の強みは「空間を見る目とデザインセンス、そして細部へのこだわり」です。色彩検定とインテリアプランナー資格取得を通じ、色・形・素材の組み合わせを体系的に学んできました。</p>
+    <p>Instagramでのインテリア発信（フォロワー1,400人）を通じ、「伝わるビジュアル」の作り方も身につけています。一方で、完成度にこだわるあまり時間がかかることがあり、チームより個人作業が得意な面があります。この点は意識的に改善しながら、デザインの力を仕事に活かしたいと考えています。</p>
+  </div>
+  <div class="sec-card">
+    <h3>Q3. 志望動機</h3>
+    <p>御社のECサイトや広報・ブランドコミュニケーション部門に強い関心があります。服のビジュアル表現や商品の見せ方を通じて、お客様の「欲しい」という気持ちを引き出す仕事が、自分のデザインへの興味と重なるからです。</p>
+    <p>Instagramでの発信経験を通じ、「ビジュアルで人の気持ちを動かす」ことの面白さを体感してきました。御社では、色彩・空間・デザインの感覚を活かしながら、ブランドの魅力を最大限に伝える仕事をしたいと考えています。まずはEC業務や広報業務を通じて経験を積み、将来はブランドのビジュアルコンセプトに関わる仕事に挑戦したいと思っています。</p>
+  </div>
+</div>
+
+<!-- ══════════════════ No.5 蓮 ══════════════════ -->
+<div class="person-panel" id="person-4">
+  <div class="profile-hero theme-ren">
+    <div class="profile-hero-top">
+      <div class="avatar-wrap">
+        <!-- 蓮 illustration -->
+        <svg viewBox="0 0 110 140" width="100" height="128" xmlns="http://www.w3.org/2000/svg">
+          <!-- casual top -->
+          <path d="M16,140 L16,94 Q55,112 94,94 L94,140 Z" fill="#B06020"/>
+          <!-- hoodie strings -->
+          <line x1="50" y1="96" x2="48" y2="120" stroke="#D08040" stroke-width="2" stroke-linecap="round"/>
+          <line x1="60" y1="96" x2="62" y2="120" stroke="#D08040" stroke-width="2" stroke-linecap="round"/>
+          <!-- hood detail -->
+          <path d="M36,94 Q55,106 74,94" stroke="#D08040" stroke-width="1.5" fill="none"/>
+          <!-- neck -->
+          <rect x="48" y="78" width="14" height="18" rx="4" fill="#E8B890"/>
+          <!-- head - slightly rounder, youthful -->
+          <ellipse cx="55" cy="62" rx="29" ry="31" fill="#E8B890"/>
+          <!-- hair - dark, short casual -->
+          <path d="M26,52 Q26,36 55,28 Q84,36 84,52" fill="#1A1010"/>
+          <ellipse cx="55" cy="34" rx="29" ry="12" fill="#1A1010"/>
+          <!-- side hair short -->
+          <path d="M26,52 Q24,60 28,66" stroke="#1A1010" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <path d="M84,52 Q86,60 82,66" stroke="#1A1010" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <!-- casual fringe -->
+          <path d="M36,36 Q40,44 38,50" stroke="#1A1010" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <path d="M55,30 Q57,38 55,46" stroke="#1A1010" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <!-- eyes - bright and wide -->
+          <ellipse cx="43" cy="62" rx="7" ry="7.5" fill="white"/>
+          <ellipse cx="67" cy="62" rx="7" ry="7.5" fill="white"/>
+          <circle cx="44" cy="63" r="5" fill="#1A1010"/>
+          <circle cx="68" cy="63" r="5" fill="#1A1010"/>
+          <circle cx="45.5" cy="61" r="2" fill="white"/>
+          <circle cx="69.5" cy="61" r="2" fill="white"/>
+          <!-- energetic brows slightly raised -->
+          <path d="M36,53 Q44,48 51,53" stroke="#1A1010" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M59,53 Q67,48 74,53" stroke="#1A1010" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- big smile -->
+          <path d="M43,77 Q55,90 67,77" stroke="#C06040" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <!-- teeth hint -->
+          <path d="M45,78 Q55,87 65,78" fill="white" opacity="0.6"/>
+          <!-- bright blush -->
+          <ellipse cx="32" cy="73" rx="9" ry="6" fill="#FFA080" opacity="0.45"/>
+          <ellipse cx="78" cy="73" rx="9" ry="6" fill="#FFA080" opacity="0.45"/>
+        </svg>
+      </div>
+      <div class="profile-info">
+        <div class="p-no">CANDIDATE No.5</div>
+        <div class="p-name">田村 蓮</div>
+        <div class="p-school">摂津ビジネス短期大学<br>経営学科</div>
+        <div class="p-age">20歳</div>
+      </div>
+    </div>
+    <div class="profile-hero-bottom">
+      <span class="p-keyword">💬 行動力◎ / SNS巧み</span>
+    </div>
+  </div>
+
+  <div class="sec-card">
+    <h3>Skills &amp; Qualifications</h3>
+    <div class="skill-row">
+      <span class="skill-pill">販売士3級</span>
+      <span class="skill-pill">普通自動車免許</span>
+    </div>
+    <div class="hobby-text" style="margin-top:12px">🏀 バスケットボール・料理動画撮影・SNS運用・音楽フェス</div>
+  </div>
+  <div class="sec-card">
+    <h3>Q1. ガクチカ</h3>
+    <p>学内の学祭実行委員として、飲食ブースの企画・運営を担当しました。昨年度より来場者を増やしたいという目標を掲げ、自分でInstagramのアカウントを開設し、告知投稿の写真撮影・デザイン・文章作成をすべて一人で担当しました。</p>
+    <p>投稿を重ねるうちにフォロワーが増え、当日の来場者数は前年比1.3倍を達成。学内で「蓮のSNSが効いた」と話題になり、学祭委員長から「来年もSNS担当をやってほしい」と言われました。自分のアイデアと行動が数字に直結した体験として、強く記憶に残っています。</p>
+  </div>
+  <div class="sec-card">
+    <h3>Q2. 自己PR</h3>
+    <p>私の強みは「アイデアをすぐ形にする行動力と、場を盛り上げる提案力」です。学祭でのSNS運用経験から、デジタルを使った情報発信の仕組みも実践的に学んでいます。</p>
+    <p>カフェアルバイトでは「この季節限定メニューをSNS映えさせたい」という提案が採用され、売上向上に貢献しました。一方で、勢いで動いてしまい確認や書類作業が後回しになることがある点は、自分の課題として認識しています。チームの中で「動かす人」としての役割を担いながら、細かい部分は意識的に補っていきたいと考えています。</p>
+  </div>
+  <div class="sec-card">
+    <h3>Q3. 志望動機</h3>
+    <p>御社のEC・デジタル事業部や法人営業部に関心があります。SNSを使った情報発信の経験と、販売士資格で学んだ顧客心理・商品知識を活かして、デジタルとリアルの両面からアパレルの魅力を届けたいと考えています。</p>
+    <p>ファッションは「人の気持ちを変える力」があると思っています。良い服との出会いで自信が生まれたり、新しい自分に出会えたりする。その体験を多くの人に届けることに貢献したい、それが御社を志望した理由です。まずは行動力と提案力を現場で鍛え、将来はブランドを引っ張るリーダーになりたいと思っています。</p>
+  </div>
+</div>
+
+<div class="back-link"><a href="index.html">← BACK TO LIST</a></div>
 </div>
 
 <script>
-function showPerson(index) {
-  document.querySelectorAll('.person-panel').forEach((p, i) => {
-    p.classList.toggle('active', i === index);
-  });
-  document.querySelectorAll('.tab-btn').forEach((b, i) => {
-    b.classList.toggle('active', i === index);
-  });
+function showPerson(i){
+  document.querySelectorAll('.person-panel').forEach((p,j)=>p.classList.toggle('active',i===j));
+  document.querySelectorAll('.tab-btn').forEach((b,j)=>b.classList.toggle('active',i===j));
+  window.scrollTo(0,0);
 }
 </script>
-
 </body>
 </html>

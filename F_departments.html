@@ -3,226 +3,462 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>部署ガイドカード集｜配属決定ゲーム</title>
+<title>部署ガイドカード集｜LAVIRE</title>
 <style>
+  :root {
+    --bg: #F8F6F3; --white: #FFFFFF; --black: #1C1A18;
+    --gold: #BF9E78; --rose: #C4849A; --sage: #7D9E8C;
+    --text: #3A3835; --text-light: #7A7572; --border: #E5DDD5;
+  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-         background: #F4FBF6; color: #333; }
-  .header { background: linear-gradient(135deg, #1A7A42, #2EAD62);
-             color: white; padding: 20px 16px 16px; }
-  .header .back a { color: white; text-decoration: none; font-size: 13px; opacity: 0.8; }
-  .header .label { font-size: 11px; background: rgba(255,255,255,0.25);
-                   display: inline-block; padding: 3px 10px; border-radius: 20px;
-                   margin: 10px 0 8px; }
-  .header h1 { font-size: 22px; font-weight: 700; line-height: 1.3; }
-  .header .sub { font-size: 13px; opacity: 0.8; margin-top: 6px; }
+  body { font-family: 'Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP',sans-serif;
+         background: var(--bg); color: var(--text); }
 
-  .container { max-width: 500px; margin: 0 auto; padding: 16px; }
+  .header { background: var(--black); color: white; padding: 24px 20px 20px; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; top: -30px; right: -30px;
+    width: 120px; height: 120px; border: 2px solid rgba(191,158,120,0.3); border-radius: 50%; }
+  .header::after { content: ''; position: absolute; top: 10px; right: 10px;
+    width: 70px; height: 70px; border: 1px solid rgba(191,158,120,0.2); border-radius: 50%; }
+  .back a { color: var(--gold); text-decoration: none; font-size: 13px; letter-spacing: 1px; }
+  .label { font-size: 10px; color: var(--gold); letter-spacing: 3px; text-transform: uppercase;
+           margin: 12px 0 8px; }
+  .header h1 { font-size: 22px; font-weight: 300; line-height: 1.4; letter-spacing: 2px; }
+  .header h1 strong { font-weight: 700; }
+  .header .sub { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 8px; letter-spacing: 1px; }
 
-  .hint { background: #E8F8EE; border-radius: 12px; padding: 12px 14px;
-          margin-bottom: 16px; border-left: 4px solid #2EAD62; }
-  .hint p { font-size: 13px; color: #1A7A42; line-height: 1.6; }
+  .container { max-width: 520px; margin: 0 auto; padding: 20px 16px; }
 
-  .dept-card { background: white; border-radius: 16px; margin-bottom: 14px;
-               box-shadow: 0 2px 10px rgba(0,0,0,0.06); overflow: hidden; }
-  .dept-header { padding: 16px 18px 12px; border-bottom: 1px solid #F0F0F0;
-                 display: flex; align-items: flex-start; gap: 14px; }
-  .dept-num-badge { background: #1A7A42; color: white; font-size: 14px; font-weight: 700;
-                    width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
-                    display: flex; align-items: center; justify-content: center; }
-  .dept-name { font-size: 16px; font-weight: 700; color: #1A1A1A; line-height: 1.4; }
-  .dept-location { font-size: 12px; color: #888; margin-top: 3px; }
-  .dept-body { padding: 14px 18px 16px; }
-  .dept-desc { font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 12px; }
+  .hint { background: #FBF8F4; border-radius: 12px; padding: 14px 16px;
+          margin-bottom: 20px; border-left: 3px solid var(--gold); }
+  .hint p { font-size: 13px; color: var(--text-light); line-height: 1.7; }
 
-  .label-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
-  .info-label { font-size: 11px; font-weight: 700; color: white;
-                background: #2EAD62; border-radius: 6px; padding: 3px 8px; }
-  .info-label.orange { background: #E07A20; }
+  .dept-card { background: var(--white); border-radius: 16px; margin-bottom: 20px;
+               box-shadow: 0 2px 20px rgba(0,0,0,0.06); overflow: hidden; }
 
-  .vibe-box { background: #F4FBF6; border-radius: 10px; padding: 12px;
-              margin-bottom: 10px; font-size: 14px; color: #333; line-height: 1.7; }
-  .person-box { background: #E8F8EE; border-radius: 10px; padding: 12px;
-                font-size: 14px; color: #1A4A2A; line-height: 1.7; font-weight: 600; }
+  .dept-top { padding: 20px 20px 16px; border-bottom: 1px solid #F0EBE4; }
+  .dept-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .dept-circle { width: 40px; height: 40px; border-radius: 50%; display: flex;
+                 align-items: center; justify-content: center; font-size: 18px;
+                 flex-shrink: 0; }
+  .dept-num { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--text-light); }
+  .dept-location { font-size: 11px; color: var(--text-light); margin-top: 2px; }
+  .dept-name { font-size: 17px; font-weight: 700; color: var(--black); line-height: 1.4;
+               margin-bottom: 6px; }
+  .dept-catch { font-size: 13px; color: var(--text-light); font-style: italic; line-height: 1.5; }
 
-  .back-link { text-align: center; padding: 20px 0; }
-  .back-link a { color: #1A7A42; text-decoration: none; font-size: 14px; font-weight: 600; }
+  .fit-tag { display: inline-block; background: var(--black); color: white;
+             font-size: 12px; padding: 6px 14px; border-radius: 20px; margin-top: 10px;
+             letter-spacing: 0.5px; }
+
+  .dept-body { padding: 16px 20px 20px; }
+
+  .block-title { font-size: 10px; letter-spacing: 2px; color: var(--gold);
+                 font-weight: 700; text-transform: uppercase; margin-bottom: 10px;
+                 padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+
+  .culture-list { margin-bottom: 16px; }
+  .culture-item { display: flex; align-items: flex-start; margin-bottom: 8px;
+                  font-size: 14px; color: var(--text); line-height: 1.7; }
+  .culture-item::before { content: '—'; color: var(--gold); margin-right: 8px;
+                           flex-shrink: 0; margin-top: 1px; }
+
+  .schedule { background: #FAFAF8; border-radius: 10px; padding: 14px 16px;
+              margin-bottom: 16px; }
+  .schedule-row { display: flex; align-items: flex-start; margin-bottom: 6px;
+                  font-size: 13px; line-height: 1.6; }
+  .schedule-row:last-child { margin-bottom: 0; }
+  .stime { color: var(--gold); font-weight: 700; min-width: 44px; flex-shrink: 0; }
+  .stask { color: var(--text); }
+
+  .veteran { background: linear-gradient(135deg, #FBF8F4, #F5EFE8);
+             border-radius: 10px; padding: 16px; margin-bottom: 0;
+             position: relative; }
+  .veteran::before { content: '"'; position: absolute; top: 8px; left: 14px;
+                     font-size: 40px; color: var(--gold); opacity: 0.3;
+                     font-family: Georgia, serif; line-height: 1; }
+  .veteran p { font-size: 14px; color: var(--text); line-height: 1.8;
+               padding-left: 18px; padding-top: 4px; }
+  .veteran .v-tag { font-size: 11px; color: var(--text-light); margin-top: 8px;
+                    padding-left: 18px; display: block; }
+
+  .back-link { text-align: center; padding: 24px 0; }
+  .back-link a { color: var(--text-light); text-decoration: none; font-size: 13px;
+                 letter-spacing: 1px; border-bottom: 1px solid var(--border); padding-bottom: 2px; }
+
+  .c1 { background: #FDE8EC; }
+  .c2 { background: #FDE8D8; }
+  .c3 { background: #FCF0D8; }
+  .c4 { background: #E8F0FC; }
+  .c5 { background: #F0E8FC; }
+  .c6 { background: #E8FCF0; }
+  .c7 { background: #E8F8FC; }
+  .c8 { background: #F8F0E8; }
+  .c9 { background: #FCE8F0; }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="back"><a href="index.html">← 資料一覧に戻る</a></div>
-  <div class="label">F — 部署ガイドカード集</div>
-  <h1>配属先部署ガイド</h1>
-  <div class="sub">人事部内限定｜2030年度版</div>
+  <div class="back"><a href="index.html">← BACK</a></div>
+  <div class="label">Department Guide — F</div>
+  <h1><strong>部署ガイド</strong><br>カード集</h1>
+  <div class="sub">LAVIRE Co., Ltd. — 2030 Confidential</div>
 </div>
 
 <div class="container">
 
   <div class="hint">
-    <p>📌 各部署の雰囲気・文化・向いている人物像を確認して、内定者との相性を考えよう。</p>
+    <p>各部署の雰囲気・1日のスケジュール・先輩の声を確認して、5名との相性を考えよう。</p>
   </div>
 
   <!-- ① 法人営業部（百貨店） -->
   <div class="dept-card">
-    <div class="dept-header">
-      <div class="dept-num-badge">①</div>
-      <div>
-        <div class="dept-name">法人営業部<br>（百貨店・商業施設担当）</div>
-        <div class="dept-location">📍 大阪本社</div>
+    <div class="dept-top">
+      <div class="dept-meta">
+        <div class="dept-circle c1">🏬</div>
+        <div>
+          <div class="dept-num">DEPT. 01</div>
+          <div class="dept-location">📍 大阪本社</div>
+        </div>
       </div>
+      <div class="dept-name">法人営業部<br>（百貨店・商業施設担当）</div>
+      <div class="dept-catch">大手バイヤーとの信頼を武器に、ブランドを広げる</div>
+      <div class="fit-tag">👤 礼儀正しく、じっくり信頼関係を築ける人</div>
     </div>
     <div class="dept-body">
-      <div class="dept-desc">大手バイヤーとの信頼を武器に、ブランドを広げる。</div>
-      <div class="label-row"><span class="info-label">雰囲気・文化</span></div>
-      <div class="vibe-box">「焦らず、丁寧に」が合言葉。長期的な信頼関係が決め手。接待や展示会への同行もあり。</div>
-      <div class="label-row"><span class="info-label orange">向いている人</span></div>
-      <div class="person-box">礼儀正しく、じっくり信頼関係を築ける人</div>
+      <div class="block-title">Culture</div>
+      <div class="culture-list">
+        <div class="culture-item">百貨店・大型商業施設のバイヤーを担当する、会社の「顔」的な部署。スーツでの訪問が基本で、礼儀と誠実さが何より重要視される。</div>
+        <div class="culture-item">先輩社員との同行から始まり、じっくり1年かけて顧客を覚えていくOJTスタイル。「焦らず、丁寧に」が合言葉。</div>
+        <div class="culture-item">取引先との長期的な信頼関係が受注の決め手。5年後・10年後を見据えた関係づくりを大切にする文化がある。</div>
+      </div>
+      <div class="block-title">1日のスケジュール</div>
+      <div class="schedule">
+        <div class="schedule-row"><span class="stime">8:30</span><span class="stask">朝礼・当日スケジュール確認</span></div>
+        <div class="schedule-row"><span class="stime">9:30</span><span class="stask">百貨店バイヤーへの訪問（先輩同行）</span></div>
+        <div class="schedule-row"><span class="stime">12:00</span><span class="stask">ランチ（取引先と会食の場合も）</span></div>
+        <div class="schedule-row"><span class="stime">13:30</span><span class="stask">商談報告書・提案資料の作成</span></div>
+        <div class="schedule-row"><span class="stime">16:00</span><span class="stask">上司への報告・翌日準備</span></div>
+        <div class="schedule-row"><span class="stime">18:00</span><span class="stask">退社（接待あり月1〜2回）</span></div>
+      </div>
+      <div class="block-title">先輩スタッフからひと言</div>
+      <div class="veteran">
+        <p>最初は百貨店に入るだけで緊張していました。でも3年目には、自分が担当するブランドコーナーが百貨店のポスターに使われるようになりました。地道な信頼の積み重ねが、こういう形で返ってくるんだと実感しています。</p>
+        <span class="v-tag">— 入社4年目</span>
+      </div>
     </div>
   </div>
 
   <!-- ② 法人営業部（地方小売） -->
   <div class="dept-card">
-    <div class="dept-header">
-      <div class="dept-num-badge">②</div>
-      <div>
-        <div class="dept-name">法人営業部<br>（地方小売・専門店担当）</div>
-        <div class="dept-location">📍 名古屋支店</div>
+    <div class="dept-top">
+      <div class="dept-meta">
+        <div class="dept-circle c2">🔥</div>
+        <div>
+          <div class="dept-num">DEPT. 02</div>
+          <div class="dept-location">📍 名古屋支店</div>
+        </div>
       </div>
+      <div class="dept-name">法人営業部<br>（地方小売・専門店担当）</div>
+      <div class="dept-catch">フットワーク軽く、新規開拓で市場をつくる</div>
+      <div class="fit-tag">👤 行動力があって、初対面でも物怖じしない人</div>
     </div>
     <div class="dept-body">
-      <div class="dept-desc">フットワーク軽く、新規開拓で市場をつくる。</div>
-      <div class="label-row"><span class="info-label">雰囲気・文化</span></div>
-      <div class="vibe-box">「まず動いてみる、振り返って次に活かす」が文化。スピード感重視。地方出張あり。</div>
-      <div class="label-row"><span class="info-label orange">向いている人</span></div>
-      <div class="person-box">行動力があって、初対面でも物怖じしない人</div>
+      <div class="block-title">Culture</div>
+      <div class="culture-list">
+        <div class="culture-item">地方のセレクトショップや小売店を新規・既存問わず担当する、フットワーク重視の営業チーム。エリアを一人で回ることも多い。</div>
+        <div class="culture-item">「まず動いてみる、振り返って次に活かす」が文化。失敗を引きずらず、スピード感を大切にしている。</div>
+        <div class="culture-item">若手でも早い段階から自分の担当エリアを持てる。数字で評価されるのでやりがいも明確。</div>
+      </div>
+      <div class="block-title">1日のスケジュール</div>
+      <div class="schedule">
+        <div class="schedule-row"><span class="stime">8:00</span><span class="stask">朝礼・当日訪問先確認</span></div>
+        <div class="schedule-row"><span class="stime">9:00</span><span class="stask">テレアポ・訪問調整</span></div>
+        <div class="schedule-row"><span class="stime">10:30</span><span class="stask">外回り（午前2〜3件）</span></div>
+        <div class="schedule-row"><span class="stime">12:30</span><span class="stask">ランチ（近くの定食屋が定番）</span></div>
+        <div class="schedule-row"><span class="stime">14:00</span><span class="stask">外回り（午後3〜4件）</span></div>
+        <div class="schedule-row"><span class="stime">18:00</span><span class="stask">日報記入・翌日準備</span></div>
+        <div class="schedule-row"><span class="stime">19:00</span><span class="stask">退社（繁忙期はもう少し遅め）</span></div>
+      </div>
+      <div class="block-title">先輩スタッフからひと言</div>
+      <div class="veteran">
+        <p>名古屋に来てまず驚いたのは、地元のお店がどこもあったかいことでした。最初は飛び込みもこわかったけど、今では担当エリアのオーナーさんから先に声をかけてもらえるようになりました。人と会うのが好きな人に向いていると思います！</p>
+        <span class="v-tag">— 入社2年目</span>
+      </div>
     </div>
   </div>
 
   <!-- ③ 直営店 販売部 -->
   <div class="dept-card">
-    <div class="dept-header">
-      <div class="dept-num-badge">③</div>
-      <div>
-        <div class="dept-name">直営店 販売部</div>
-        <div class="dept-location">📍 全国各地の直営店</div>
+    <div class="dept-top">
+      <div class="dept-meta">
+        <div class="dept-circle c3">👗</div>
+        <div>
+          <div class="dept-num">DEPT. 03</div>
+          <div class="dept-location">📍 全国各地の直営店</div>
+        </div>
       </div>
+      <div class="dept-name">直営店 販売部</div>
+      <div class="dept-catch">お客様の「似合う」を引き出す、ブランドの現場</div>
+      <div class="fit-tag">👤 接客が好きで、ファッションに興味がある人</div>
     </div>
     <div class="dept-body">
-      <div class="dept-desc">お客様の「似合う」を引き出す、ブランドの現場。</div>
-      <div class="label-row"><span class="info-label">雰囲気・文化</span></div>
-      <div class="vibe-box">チームワーク重視。「今日のスタッフでよかった」とお客様に言ってもらえることがやりがい。ファッションへの興味が活きる。</div>
-      <div class="label-row"><span class="info-label orange">向いている人</span></div>
-      <div class="person-box">接客が好きで、ファッションに興味がある人</div>
+      <div class="block-title">Culture</div>
+      <div class="culture-list">
+        <div class="culture-item">ラヴィールのブランドを直接お客様に届ける最前線。ショップスタッフとして接客・スタイリング提案・VMD（売場づくり）を担当する。</div>
+        <div class="culture-item">ファッションへの関心が高く、「着こなしのコツ」を自分から学ぶ姿勢のある人が活躍している。</div>
+        <div class="culture-item">チームワークが強く、「今日のスタッフでよかった」とお客様に言ってもらえることがやりがい。スタッフ同士で売場を磨き合う文化がある。</div>
+      </div>
+      <div class="block-title">1日のスケジュール</div>
+      <div class="schedule">
+        <div class="schedule-row"><span class="stime">10:00</span><span class="stask">開店準備・VMD確認・朝礼</span></div>
+        <div class="schedule-row"><span class="stime">11:00</span><span class="stask">接客開始・スタイリング提案</span></div>
+        <div class="schedule-row"><span class="stime">13:00</span><span class="stask">ランチ（交代制）</span></div>
+        <div class="schedule-row"><span class="stime">14:00</span><span class="stask">接客・フィッティングルーム対応</span></div>
+        <div class="schedule-row"><span class="stime">17:00</span><span class="stask">在庫確認・補充・売上入力</span></div>
+        <div class="schedule-row"><span class="stime">19:30</span><span class="stask">閉店・清掃・翌日準備</span></div>
+        <div class="schedule-row"><span class="stime">20:00</span><span class="stask">退社（土日は繁忙、平日は落ち着く）</span></div>
+      </div>
+      <div class="block-title">先輩スタッフからひと言</div>
+      <div class="veteran">
+        <p>最初はスタイリング提案がうまくできなくて悔しかった。でも先輩に教わりながら続けていたら、お客様から「あなたにまた接客してほしい」と指名が入るようになりました。ファッションの力って本当に人を変えるんだなって毎日感じています。</p>
+        <span class="v-tag">— 入社2年目</span>
+      </div>
     </div>
   </div>
 
   <!-- ④ EC・デジタル事業部 -->
   <div class="dept-card">
-    <div class="dept-header">
-      <div class="dept-num-badge">④</div>
-      <div>
-        <div class="dept-name">EC・デジタル事業部</div>
-        <div class="dept-location">📍 大阪本社</div>
+    <div class="dept-top">
+      <div class="dept-meta">
+        <div class="dept-circle c4">💻</div>
+        <div>
+          <div class="dept-num">DEPT. 04</div>
+          <div class="dept-location">📍 大阪本社</div>
+        </div>
       </div>
+      <div class="dept-name">EC・デジタル事業部</div>
+      <div class="dept-catch">デジタルでラヴィールの魅力を世界に届ける</div>
+      <div class="fit-tag">👤 SNSやネットに詳しく、数字も気にできる人</div>
     </div>
     <div class="dept-body">
-      <div class="dept-desc">デジタルでラヴィールの魅力を世界に届ける。</div>
-      <div class="label-row"><span class="info-label">雰囲気・文化</span></div>
-      <div class="vibe-box">感性とデータを行き来しながら仕事を進める。SNSやECサイト運営、数値分析も担当。ファッションとITへの興味が両方活きる。</div>
-      <div class="label-row"><span class="info-label orange">向いている人</span></div>
-      <div class="person-box">SNSやネットに詳しく、数字も気にできる人</div>
+      <div class="block-title">Culture</div>
+      <div class="culture-list">
+        <div class="culture-item">ECサイトの運営・商品登録・SNS発信・広告運用・アクセス数分析などを担当する、デジタル最前線の部署。</div>
+        <div class="culture-item">ファッションとITの両方に興味があるメンバーが集まり、「感性」と「データ」を行き来しながら仕事を進める。</div>
+        <div class="culture-item">新しいSNSのトレンドや機能をいち早くキャッチして取り入れる文化があり、若手の提案が通りやすい。</div>
+      </div>
+      <div class="block-title">1日のスケジュール</div>
+      <div class="schedule">
+        <div class="schedule-row"><span class="stime">9:30</span><span class="stask">SNSモニタリング・競合チェック</span></div>
+        <div class="schedule-row"><span class="stime">10:00</span><span class="stask">ECサイト売上データ確認・分析</span></div>
+        <div class="schedule-row"><span class="stime">11:00</span><span class="stask">商品ページの作成・写真チェック</span></div>
+        <div class="schedule-row"><span class="stime">12:00</span><span class="stask">ランチ（外出して気分転換する人が多い）</span></div>
+        <div class="schedule-row"><span class="stime">13:00</span><span class="stask">SNS投稿作成・広告配信設定</span></div>
+        <div class="schedule-row"><span class="stime">15:00</span><span class="stask">外部クリエイターや広告代理店との打合せ</span></div>
+        <div class="schedule-row"><span class="stime">17:30</span><span class="stask">翌日分のコンテンツ準備</span></div>
+        <div class="schedule-row"><span class="stime">18:30</span><span class="stask">退社（繁忙期はプラス1〜2時間）</span></div>
+      </div>
+      <div class="block-title">先輩スタッフからひと言</div>
+      <div class="veteran">
+        <p>入社前はPCが得意な人だけの部署だと思っていましたが、ファッションへの目線が大事だと気づきました。インスタで映える写真の選び方や、コメントへの返し方も立派な仕事です。デジタル好き＋ファッション好きなら最高の場所ですよ。</p>
+        <span class="v-tag">— 入社3年目</span>
+      </div>
     </div>
   </div>
 
   <!-- ⑤ 広報・ブランドコミュニケーション部 -->
   <div class="dept-card">
-    <div class="dept-header">
-      <div class="dept-num-badge">⑤</div>
-      <div>
-        <div class="dept-name">広報・ブランドコミュニケーション部</div>
-        <div class="dept-location">📍 大阪本社</div>
+    <div class="dept-top">
+      <div class="dept-meta">
+        <div class="dept-circle c5">✨</div>
+        <div>
+          <div class="dept-num">DEPT. 05</div>
+          <div class="dept-location">📍 大阪本社</div>
+        </div>
       </div>
+      <div class="dept-name">広報・ブランドコミュニケーション部</div>
+      <div class="dept-catch">ラヴィールの「伝わる姿」を設計する</div>
+      <div class="fit-tag">👤 文章を書くのが好きで、ブランドへの愛着がある人</div>
     </div>
     <div class="dept-body">
-      <div class="dept-desc">ラヴィールの「伝わる姿」を設計する。</div>
-      <div class="label-row"><span class="info-label">雰囲気・文化</span></div>
-      <div class="vibe-box">「言葉のセンス」と「ビジュアルへの感覚」が求められるが、技術より「好き」の気持ちを大切にする職場。プレスリリース・SNS・カタログ制作など。</div>
-      <div class="label-row"><span class="info-label orange">向いている人</span></div>
-      <div class="person-box">文章を書くのが好きで、ブランドへの愛着がある人</div>
+      <div class="block-title">Culture</div>
+      <div class="culture-list">
+        <div class="culture-item">プレスリリース・メディア対応・インフルエンサー施策・カタログ制作など、ラヴィールのブランドイメージを外部に届ける部署。</div>
+        <div class="culture-item">「言葉のセンス」と「ビジュアルへの感覚」が求められるが、技術より「好き」の気持ちを大切にする文化がある。</div>
+        <div class="culture-item">外部のデザイナー・カメラマン・ライターと一緒に動くことが多く、コミュニケーション力と段取り力が重要。</div>
+      </div>
+      <div class="block-title">1日のスケジュール</div>
+      <div class="schedule">
+        <div class="schedule-row"><span class="stime">9:30</span><span class="stask">メール・メディア問合せ確認</span></div>
+        <div class="schedule-row"><span class="stime">10:00</span><span class="stask">プレスリリース草案・資料作成</span></div>
+        <div class="schedule-row"><span class="stime">12:00</span><span class="stask">ランチ（外でトレンドチェックする人も）</span></div>
+        <div class="schedule-row"><span class="stime">13:00</span><span class="stask">インフルエンサー施策の進捗管理</span></div>
+        <div class="schedule-row"><span class="stime">15:00</span><span class="stask">撮影立ち会いまたはデザイナーとの確認</span></div>
+        <div class="schedule-row"><span class="stime">17:30</span><span class="stask">SNS投稿チェック・発信</span></div>
+        <div class="schedule-row"><span class="stime">19:00</span><span class="stask">退社（展示会・イベント前は繁忙）</span></div>
+      </div>
+      <div class="block-title">先輩スタッフからひと言</div>
+      <div class="veteran">
+        <p>ブランドの言葉を考える仕事って、最初は難しく感じました。でも、自分が書いたコピーがカタログやSNSに載って、お客様の反応が届いたときの喜びは格別です。感性を言葉にしたい人には天職だと思っています。</p>
+        <span class="v-tag">— 入社4年目</span>
+      </div>
     </div>
   </div>
 
   <!-- ⑥ 総務・人事部 -->
   <div class="dept-card">
-    <div class="dept-header">
-      <div class="dept-num-badge">⑥</div>
-      <div>
-        <div class="dept-name">総務・人事部</div>
-        <div class="dept-location">📍 大阪本社</div>
+    <div class="dept-top">
+      <div class="dept-meta">
+        <div class="dept-circle c6">🌱</div>
+        <div>
+          <div class="dept-num">DEPT. 06</div>
+          <div class="dept-location">📍 大阪本社</div>
+        </div>
       </div>
+      <div class="dept-name">総務・人事部</div>
+      <div class="dept-catch">社員が安心して働ける環境をつくる縁の下の力持ち</div>
+      <div class="fit-tag">👤 几帳面で、人の役に立つことが好きな人</div>
     </div>
     <div class="dept-body">
-      <div class="dept-desc">社員が安心して働ける環境をつくる縁の下の力持ち。</div>
-      <div class="label-row"><span class="info-label">雰囲気・文化</span></div>
-      <div class="vibe-box">目立たないが重要。ルールや期限を守ることが大前提。残業は少なめ。採用・研修・労務・備品管理など幅広い業務を担当。</div>
-      <div class="label-row"><span class="info-label orange">向いている人</span></div>
-      <div class="person-box">几帳面で、人の役に立つことが好きな人</div>
+      <div class="block-title">Culture</div>
+      <div class="culture-list">
+        <div class="culture-item">採用業務・労務管理・社内制度整備・備品管理などを担当する、会社の「土台」をつくる部署。</div>
+        <div class="culture-item">目立たないけれど、社員の全員が「総務・人事のおかげで働ける」と感じている存在。縁の下の力持ちとしての誇りがある。</div>
+        <div class="culture-item">ルールや期限を守ることが大前提。落ち着いた雰囲気で、チームの連携も良好。残業は少なめ。</div>
+      </div>
+      <div class="block-title">1日のスケジュール</div>
+      <div class="schedule">
+        <div class="schedule-row"><span class="stime">9:00</span><span class="stask">メール確認・問合せ対応</span></div>
+        <div class="schedule-row"><span class="stime">10:00</span><span class="stask">採用書類整理・選考スケジュール管理</span></div>
+        <div class="schedule-row"><span class="stime">12:00</span><span class="stask">ランチ（部内で一緒に行くことも）</span></div>
+        <div class="schedule-row"><span class="stime">13:00</span><span class="stask">社員からの各種申請処理・備品発注</span></div>
+        <div class="schedule-row"><span class="stime">15:00</span><span class="stask">採用面接サポートまたは研修資料作成</span></div>
+        <div class="schedule-row"><span class="stime">17:00</span><span class="stask">書類整理・翌日準備</span></div>
+        <div class="schedule-row"><span class="stime">18:00</span><span class="stask">退社（残業ほぼなし）</span></div>
+      </div>
+      <div class="block-title">先輩スタッフからひと言</div>
+      <div class="veteran">
+        <p>事務の仕事って、目に見えにくいんです。でも、新入社員が入社した日に笑顔で迎えられる環境をつくるのは私たちの仕事。そのときの達成感は格別です。細かいことが好きな人、人の役に立ちたい人には絶対向いています。</p>
+        <span class="v-tag">— 入社2年目</span>
+      </div>
     </div>
   </div>
 
   <!-- ⑦ 経理・財務部 -->
   <div class="dept-card">
-    <div class="dept-header">
-      <div class="dept-num-badge">⑦</div>
-      <div>
-        <div class="dept-name">経理・財務部</div>
-        <div class="dept-location">📍 大阪本社</div>
+    <div class="dept-top">
+      <div class="dept-meta">
+        <div class="dept-circle c7">📊</div>
+        <div>
+          <div class="dept-num">DEPT. 07</div>
+          <div class="dept-location">📍 大阪本社</div>
+        </div>
       </div>
+      <div class="dept-name">経理・財務部</div>
+      <div class="dept-catch">数字でラヴィールの健全な経営を支える</div>
+      <div class="fit-tag">👤 正確さが得意で、数字にも抵抗がない人</div>
     </div>
     <div class="dept-body">
-      <div class="dept-desc">数字でラヴィールの健全な経営を支える。</div>
-      <div class="label-row"><span class="info-label">雰囲気・文化</span></div>
-      <div class="vibe-box">ミスが許されない緊張感。「数字が正確に合ったとき」の達成感は格別。几帳面な人が輝く職場。月次決算・請求書処理・資金管理など。</div>
-      <div class="label-row"><span class="info-label orange">向いている人</span></div>
-      <div class="person-box">正確さが得意で、数字にも抵抗がない人</div>
+      <div class="block-title">Culture</div>
+      <div class="culture-list">
+        <div class="culture-item">会計処理・請求書管理・予算管理・決算補助などを担当する、会社のお金の流れを守る部署。</div>
+        <div class="culture-item">ミスが許されない緊張感はあるが、「数字が正確に合ったとき」の達成感は格別。几帳面な人が輝く部署。</div>
+        <div class="culture-item">静かで落ち着いた雰囲気。質問しやすい環境で、資格取得を目指す社員へのサポートも充実している。</div>
+      </div>
+      <div class="block-title">1日のスケジュール</div>
+      <div class="schedule">
+        <div class="schedule-row"><span class="stime">9:00</span><span class="stask">メール確認・前日の入出金チェック</span></div>
+        <div class="schedule-row"><span class="stime">10:00</span><span class="stask">請求書処理・伝票入力</span></div>
+        <div class="schedule-row"><span class="stime">12:00</span><span class="stask">ランチ（ほぼ定時休憩）</span></div>
+        <div class="schedule-row"><span class="stime">13:00</span><span class="stask">予算実績対比の集計作業</span></div>
+        <div class="schedule-row"><span class="stime">15:00</span><span class="stask">上司へのデータ提出・確認依頼</span></div>
+        <div class="schedule-row"><span class="stime">17:00</span><span class="stask">翌日作業の準備・ファイリング</span></div>
+        <div class="schedule-row"><span class="stime">18:00</span><span class="stask">退社（決算期は残業あり）</span></div>
+      </div>
+      <div class="block-title">先輩スタッフからひと言</div>
+      <div class="veteran">
+        <p>最初はExcelの使い方もあやふやでしたが、先輩に丁寧に教えてもらい、今では月次の集計を一人で担当できるようになりました。数字が苦手でも、正確さと粘り強さがあれば大丈夫だと思います。資格取得も会社がサポートしてくれます。</p>
+        <span class="v-tag">— 入社3年目</span>
+      </div>
     </div>
   </div>
 
   <!-- ⑧ 調達・生産管理部 -->
   <div class="dept-card">
-    <div class="dept-header">
-      <div class="dept-num-badge">⑧</div>
-      <div>
-        <div class="dept-name">調達・生産管理部</div>
-        <div class="dept-location">📍 大阪本社（工場：アジア各地）</div>
+    <div class="dept-top">
+      <div class="dept-meta">
+        <div class="dept-circle c8">🧵</div>
+        <div>
+          <div class="dept-num">DEPT. 08</div>
+          <div class="dept-location">📍 大阪本社（工場：アジア各地）</div>
+        </div>
       </div>
+      <div class="dept-name">調達・生産管理部</div>
+      <div class="dept-catch">服が生まれるまでの「見えない仕事」を担う</div>
+      <div class="fit-tag">👤 段取り上手で、細かい確認が苦にならない人</div>
     </div>
     <div class="dept-body">
-      <div class="dept-desc">服が生まれるまでの「見えない仕事」を担う。</div>
-      <div class="label-row"><span class="info-label">雰囲気・文化</span></div>
-      <div class="vibe-box">生地調達から縫製工場との納期調整・品質確認まで。アジア工場とのメール・電話でのやり取りが発生。段取り力が問われる職場。</div>
-      <div class="label-row"><span class="info-label orange">向いている人</span></div>
-      <div class="person-box">段取り上手で、細かい確認が苦にならない人</div>
+      <div class="block-title">Culture</div>
+      <div class="culture-list">
+        <div class="culture-item">生地・副資材の調達から縫製工場との納期調整・品質確認・コスト管理まで、商品が生まれる「裏側」を担う部署。</div>
+        <div class="culture-item">ファッションが好きな人はもちろん、「モノができる過程」に興味がある人も多い。服づくりの全体像が見えるおもしろさがある。</div>
+        <div class="culture-item">アジアの工場とのやり取りはメール・電話が中心。英語や中国語での簡単なやり取りが発生することも。</div>
+      </div>
+      <div class="block-title">1日のスケジュール</div>
+      <div class="schedule">
+        <div class="schedule-row"><span class="stime">9:00</span><span class="stask">工場からの連絡確認・納期チェック</span></div>
+        <div class="schedule-row"><span class="stime">10:00</span><span class="stask">生地・副資材の発注業務</span></div>
+        <div class="schedule-row"><span class="stime">12:00</span><span class="stask">ランチ</span></div>
+        <div class="schedule-row"><span class="stime">13:00</span><span class="stask">品質検査レポートの確認・フィードバック</span></div>
+        <div class="schedule-row"><span class="stime">15:00</span><span class="stask">デザイン・販売チームとの連携ミーティング</span></div>
+        <div class="schedule-row"><span class="stime">17:00</span><span class="stask">在庫状況まとめ・翌日準備</span></div>
+        <div class="schedule-row"><span class="stime">18:30</span><span class="stask">退社（納期直前は残業あり）</span></div>
+      </div>
+      <div class="block-title">先輩スタッフからひと言</div>
+      <div class="veteran">
+        <p>服がお店に並ぶまでの仕事が、こんなに細かくて大変だとは思っていませんでした。でも、自分が管理した商品を店頭で見かけたときの誇らしさは特別です。段取りが好きな人、モノづくりの裏側に興味がある人にはたまらない職場です。</p>
+        <span class="v-tag">— 入社3年目</span>
+      </div>
     </div>
   </div>
 
   <!-- ⑨ カスタマーサポート部 -->
   <div class="dept-card">
-    <div class="dept-header">
-      <div class="dept-num-badge">⑨</div>
-      <div>
-        <div class="dept-name">カスタマーサポート部</div>
-        <div class="dept-location">📍 大阪（コールセンター）</div>
+    <div class="dept-top">
+      <div class="dept-meta">
+        <div class="dept-circle c9">📞</div>
+        <div>
+          <div class="dept-num">DEPT. 09</div>
+          <div class="dept-location">📍 大阪（コールセンター）</div>
+        </div>
       </div>
+      <div class="dept-name">カスタマーサポート部</div>
+      <div class="dept-catch">お客様の声を受け止め、ブランドへの信頼をつなぐ</div>
+      <div class="fit-tag">👤 丁寧な対応が得意で、人の話を聞くのが好きな人</div>
     </div>
     <div class="dept-body">
-      <div class="dept-desc">お客様の声を受け止め、ブランドへの信頼をつなぐ。</div>
-      <div class="label-row"><span class="info-label">雰囲気・文化</span></div>
-      <div class="vibe-box">誠実で穏やかなスタッフが多い。「怒鳴り声ゼロ」「丁寧に、でも確実に」が合言葉。お客様からの問い合わせ・クレーム・返品対応など。</div>
-      <div class="label-row"><span class="info-label orange">向いている人</span></div>
-      <div class="person-box">丁寧な対応が得意で、人の話を聞くのが好きな人</div>
+      <div class="block-title">Culture</div>
+      <div class="culture-list">
+        <div class="culture-item">商品の問い合わせ・返品対応・クレーム処理・FAQ整備などを担当する、お客様の「最後の砦」となる部署。</div>
+        <div class="culture-item">誠実で穏やかなスタッフが多く、「怒鳴り声ゼロ」「丁寧に、でも確実に」が合言葉。</div>
+        <div class="culture-item">クレームも「改善のチャンス」と捉える文化があり、対応内容が商品や接客の改善に直結することも多い。</div>
+      </div>
+      <div class="block-title">1日のスケジュール</div>
+      <div class="schedule">
+        <div class="schedule-row"><span class="stime">9:00</span><span class="stask">問合せ確認・優先度分類</span></div>
+        <div class="schedule-row"><span class="stime">9:30</span><span class="stask">電話・メール・チャット対応</span></div>
+        <div class="schedule-row"><span class="stime">12:00</span><span class="stask">ランチ（交代制）</span></div>
+        <div class="schedule-row"><span class="stime">13:00</span><span class="stask">複雑案件のチーム共有・対応策検討</span></div>
+        <div class="schedule-row"><span class="stime">14:00</span><span class="stask">FAQ更新・マニュアル整備</span></div>
+        <div class="schedule-row"><span class="stime">16:30</span><span class="stask">終日の記録まとめ・引継ぎ</span></div>
+        <div class="schedule-row"><span class="stime">17:30</span><span class="stask">退社（残業はほぼなし）</span></div>
+      </div>
+      <div class="block-title">先輩スタッフからひと言</div>
+      <div class="veteran">
+        <p>接客の仕事をしたかったけど、電話対応でいいのかなと不安でした。でも今は、お客様から「ありがとう、助かりました」の言葉をいただくたびにやりがいを感じています。丁寧に生きたい人、人の役に立ちたい人に向いていると思います。</p>
+        <span class="v-tag">— 入社2年目</span>
+      </div>
     </div>
   </div>
 

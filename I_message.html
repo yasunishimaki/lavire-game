@@ -3,233 +3,235 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>代表メッセージ｜配属決定ゲーム</title>
+<title>代表メッセージ｜LAVIRE</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-         background: #F4F8FB; color: #333; }
-  .header { background: linear-gradient(135deg, #1E5A9E, #3A86D4);
-             color: white; padding: 20px 16px 16px; }
-  .header .back a { color: white; text-decoration: none; font-size: 13px; opacity: 0.8; }
-  .header .label { font-size: 11px; background: rgba(255,255,255,0.25);
-                   display: inline-block; padding: 3px 10px; border-radius: 20px;
-                   margin: 10px 0 8px; letter-spacing: 0.5px; }
-  .header h1 { font-size: 22px; font-weight: 700; line-height: 1.3; }
-  .header .sub { font-size: 13px; opacity: 0.8; margin-top: 6px; }
-  .container { max-width: 500px; margin: 0 auto; padding: 16px; }
+  :root{--bg:#F8F6F3;--white:#FFF;--black:#1C1A18;--gold:#BF9E78;
+        --text:#3A3835;--muted:#8A8582;--border:#E5DDD5;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP',sans-serif;
+       background:var(--bg);color:var(--text);}
 
-  .section { background: white; border-radius: 16px; padding: 20px;
-             margin-bottom: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
-  .section h2 { font-size: 16px; color: #1E5A9E; margin-bottom: 14px;
-                padding-bottom: 10px; border-bottom: 2px solid #E6F0FB; }
+  .header{background:var(--black);color:white;padding:24px 20px 20px;position:relative;overflow:hidden;}
+  .header::before{content:'';position:absolute;width:200px;height:200px;border-radius:50%;
+    border:1px solid rgba(191,158,120,0.2);top:-60px;right:-50px;}
+  .back a{color:var(--gold);text-decoration:none;font-size:12px;letter-spacing:1px;}
+  .hlabel{font-size:10px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin:12px 0 8px;}
+  .header h1{font-size:24px;font-weight:300;line-height:1.4;letter-spacing:1px;}
+  .header h1 strong{font-weight:700;}
+  .header .sub{font-size:11px;color:rgba(255,255,255,0.4);margin-top:6px;letter-spacing:1px;}
 
-  .company-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .company-item { background: #F4F8FB; border-radius: 10px; padding: 12px; }
-  .company-item .item-label { font-size: 11px; color: #888; margin-bottom: 4px; }
-  .company-item .item-value { font-size: 14px; font-weight: 700; color: #222; line-height: 1.4; }
-  .company-item.full { grid-column: 1 / -1; }
+  .container{max-width:520px;margin:0 auto;padding:20px 16px 40px;}
 
-  .message-box { background: #EBF3FC; border-left: 4px solid #3A86D4;
-                 border-radius: 0 12px 12px 0; padding: 16px; margin-bottom: 16px; }
-  .message-box p { font-size: 15px; line-height: 1.9; color: #333; }
+  .sec{background:var(--white);border-radius:16px;padding:22px;
+       margin-bottom:14px;box-shadow:0 2px 16px rgba(0,0,0,0.05);}
+  .sec-title{font-size:10px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;
+             font-weight:700;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);}
 
-  .pillar-item { display: flex; align-items: flex-start; margin-bottom: 14px; }
-  .pillar-item:last-child { margin-bottom: 0; }
-  .pillar-num { background: #1E5A9E; color: white; font-size: 13px; font-weight: 700;
-                width: 28px; height: 28px; border-radius: 8px;
-                display: flex; align-items: center; justify-content: center;
-                flex-shrink: 0; margin-right: 12px; margin-top: 1px; }
-  .pillar-title { font-size: 15px; font-weight: 700; color: #222; }
-  .pillar-desc { font-size: 13px; color: #666; margin-top: 2px; line-height: 1.5; }
+  /* company info grid */
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .info-cell{background:var(--bg);border-radius:10px;padding:12px 14px;}
+  .info-cell.full{grid-column:1/-1;}
+  .cell-label{font-size:10px;letter-spacing:1px;color:var(--muted);margin-bottom:5px;text-transform:uppercase;}
+  .cell-value{font-size:14px;font-weight:700;color:var(--black);line-height:1.5;}
 
-  .kpi-table { width: 100%; border-collapse: collapse; }
-  .kpi-table th { background: #1E5A9E; color: white; font-size: 12px;
-                  padding: 8px 10px; text-align: left; }
-  .kpi-table th:first-child { border-radius: 8px 0 0 0; }
-  .kpi-table th:last-child { border-radius: 0 8px 0 0; }
-  .kpi-table td { padding: 10px; border-bottom: 1px solid #EEE;
-                  font-size: 13px; vertical-align: middle; }
-  .kpi-table tr:last-child td { border-bottom: none; }
-  .kpi-table .metric { font-weight: 600; color: #333; }
-  .kpi-table .before { color: #888; }
-  .kpi-table .after { color: #1E5A9E; font-weight: 700; }
-  .arrow { color: #3A86D4; font-size: 16px; }
+  /* message quote */
+  .quote-box{background:var(--bg);border-radius:12px;padding:20px;position:relative;}
+  .quote-mark{position:absolute;top:10px;left:14px;font-size:48px;color:var(--gold);
+              opacity:0.25;font-family:Georgia,serif;line-height:1;}
+  .quote-text{font-size:15px;line-height:2;color:var(--text);padding-left:16px;padding-top:6px;}
 
-  .expect-card { border: 1px solid #E6F0FB; border-radius: 12px; padding: 14px;
-                 margin-bottom: 10px; display: flex; align-items: flex-start; }
-  .expect-card:last-child { margin-bottom: 0; }
-  .expect-no { background: #E6F0FB; color: #1E5A9E; font-size: 12px; font-weight: 700;
-               padding: 4px 8px; border-radius: 8px; margin-right: 12px;
-               flex-shrink: 0; margin-top: 2px; }
-  .expect-name { font-size: 15px; font-weight: 700; color: #222; }
-  .expect-dept { font-size: 13px; color: #1E5A9E; margin-top: 4px; font-weight: 600; }
+  /* pillars */
+  .pillar{display:flex;align-items:flex-start;margin-bottom:16px;}
+  .pillar:last-child{margin-bottom:0;}
+  .pillar-num{width:34px;height:34px;border-radius:10px;background:var(--black);
+              color:var(--gold);font-size:13px;font-weight:700;display:flex;
+              align-items:center;justify-content:center;flex-shrink:0;margin-right:14px;margin-top:2px;}
+  .pillar-name{font-size:16px;font-weight:700;color:var(--black);margin-bottom:4px;}
+  .pillar-desc{font-size:13px;color:var(--muted);line-height:1.6;}
 
-  .back-link { text-align: center; padding: 20px 0; }
-  .back-link a { color: #1E5A9E; text-decoration: none; font-size: 14px; font-weight: 600; }
+  /* KPI table */
+  .kpi-wrap{border-radius:12px;overflow:hidden;border:1px solid var(--border);}
+  .kpi-head{display:grid;grid-template-columns:2fr 1fr 0.4fr 1fr;background:var(--black);
+            color:var(--gold);font-size:10px;letter-spacing:1px;padding:10px 14px;
+            text-transform:uppercase;}
+  .kpi-row{display:grid;grid-template-columns:2fr 1fr 0.4fr 1fr;padding:12px 14px;
+           border-bottom:1px solid var(--border);align-items:center;}
+  .kpi-row:last-child{border-bottom:none;}
+  .kpi-row:nth-child(even){background:#FAFAF8;}
+  .kpi-metric{font-size:14px;font-weight:700;color:var(--black);}
+  .kpi-before{font-size:13px;color:var(--muted);}
+  .kpi-arrow{font-size:14px;color:var(--gold);text-align:center;}
+  .kpi-after{font-size:14px;font-weight:700;color:var(--black);}
+
+  /* expected placements */
+  .expect{display:flex;align-items:flex-start;margin-bottom:12px;padding:14px;
+          border:1px solid var(--border);border-radius:12px;}
+  .expect:last-child{margin-bottom:0;}
+  .exp-no{background:var(--black);color:var(--gold);font-size:11px;font-weight:700;
+          padding:4px 9px;border-radius:8px;flex-shrink:0;letter-spacing:1px;margin-right:12px;margin-top:2px;}
+  .exp-name{font-size:15px;font-weight:700;color:var(--black);}
+  .exp-dept{font-size:13px;color:var(--gold);margin-top:4px;font-weight:600;}
+
+  .back-link{text-align:center;padding:20px 0;}
+  .back-link a{color:var(--muted);text-decoration:none;font-size:12px;letter-spacing:2px;
+               border-bottom:1px solid var(--border);padding-bottom:2px;}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="back"><a href="index.html">← 資料一覧に戻る</a></div>
-  <div class="label">I — 代表メッセージ</div>
-  <h1>経営ビジョン・<br>事業展望・採用への期待</h1>
-  <div class="sub">人事部内限定資料｜2030年度版</div>
+  <div class="back"><a href="index.html">← BACK</a></div>
+  <div class="hlabel">President's Message — I</div>
+  <h1><strong>経営ビジョン</strong>・<br>事業展望・採用への期待</h1>
+  <div class="sub">LAVIRE Co., Ltd. — HR Dept. Confidential 2030</div>
 </div>
 
 <div class="container">
 
   <!-- 会社概要 -->
-  <div class="section">
-    <h2>🏢 会社概要</h2>
-    <div class="company-grid">
-      <div class="company-item full">
-        <div class="item-label">社名</div>
-        <div class="item-value">株式会社ラヴィール（LAVIRE Co., Ltd.）</div>
+  <div class="sec">
+    <div class="sec-title">Company Overview</div>
+    <div class="info-grid">
+      <div class="info-cell full">
+        <div class="cell-label">Company Name</div>
+        <div class="cell-value">株式会社ラヴィール（LAVIRE Co., Ltd.）</div>
       </div>
-      <div class="company-item">
-        <div class="item-label">設立</div>
-        <div class="item-value">1988年（昭和63年）</div>
+      <div class="info-cell">
+        <div class="cell-label">Founded</div>
+        <div class="cell-value">1988年（昭和63年）</div>
       </div>
-      <div class="company-item">
-        <div class="item-label">本社</div>
-        <div class="item-value">大阪市北区（梅田）</div>
+      <div class="info-cell">
+        <div class="cell-label">HQ</div>
+        <div class="cell-value">大阪市北区（梅田）</div>
       </div>
-      <div class="company-item">
-        <div class="item-label">従業員数</div>
-        <div class="item-value">780名（2030年4月）</div>
+      <div class="info-cell">
+        <div class="cell-label">Employees</div>
+        <div class="cell-value">780名（2030年4月）</div>
       </div>
-      <div class="company-item">
-        <div class="item-label">事業内容</div>
-        <div class="item-value">20〜40代女性向けアパレルの企画・製造・販売</div>
+      <div class="info-cell">
+        <div class="cell-label">Business</div>
+        <div class="cell-value">20〜40代女性向けアパレルの企画・製造・販売</div>
       </div>
     </div>
   </div>
 
   <!-- 代表メッセージ -->
-  <div class="section">
-    <h2>💬 代表メッセージ</h2>
-    <div class="message-box">
-      <p>「皆さんが入社する2030年度は、ラヴィールが次の成長フェーズに踏み出す重要な節目です。デジタルとリアルを融合させた新しいアパレル体験を提供し、5年後には売上高70億円を目指します。皆さんの力が、この挑戦の原動力となります。」</p>
+  <div class="sec">
+    <div class="sec-title">President's Message</div>
+    <div class="quote-box">
+      <div class="quote-mark">"</div>
+      <div class="quote-text">皆さんが入社する2030年度は、ラヴィールが次の成長フェーズに踏み出す重要な節目です。デジタルとリアルを融合させた新しいアパレル体験を提供し、5年後には売上高70億円を目指します。皆さんの力が、この挑戦の原動力となります。</div>
     </div>
   </div>
 
   <!-- 経営の4本柱 -->
-  <div class="section">
-    <h2>🔑 経営の4本柱</h2>
-    <div class="pillar-item">
+  <div class="sec">
+    <div class="sec-title">Management Pillars</div>
+    <div class="pillar">
       <div class="pillar-num">①</div>
       <div>
-        <div class="pillar-title">販売力の強化</div>
+        <div class="pillar-name">販売力の強化</div>
         <div class="pillar-desc">直営店・法人営業の両輪でリアル販売を拡大</div>
       </div>
     </div>
-    <div class="pillar-item">
+    <div class="pillar">
       <div class="pillar-num">②</div>
       <div>
-        <div class="pillar-title">EC・デジタル推進</div>
+        <div class="pillar-name">EC・デジタル推進</div>
         <div class="pillar-desc">EC売上比率を20%→50%以上へ引き上げ</div>
       </div>
     </div>
-    <div class="pillar-item">
+    <div class="pillar">
       <div class="pillar-num">③</div>
       <div>
-        <div class="pillar-title">人材育成</div>
+        <div class="pillar-name">人材育成</div>
         <div class="pillar-desc">780名から1,200名体制へ拡大、次世代リーダー育成</div>
       </div>
     </div>
-    <div class="pillar-item">
+    <div class="pillar">
       <div class="pillar-num">④</div>
       <div>
-        <div class="pillar-title">ブランド力向上</div>
+        <div class="pillar-name">ブランド力向上</div>
         <div class="pillar-desc">広報・SNS・PR強化でラヴィールブランドを全国へ</div>
       </div>
     </div>
   </div>
 
-  <!-- 数値目標 -->
-  <div class="section">
-    <h2>📈 2030〜2035年度 経営数値目標</h2>
-    <table class="kpi-table">
-      <thead>
-        <tr>
-          <th>指標</th>
-          <th>現在</th>
-          <th></th>
-          <th>目標</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="metric">売上高</td>
-          <td class="before">38億円</td>
-          <td class="arrow">→</td>
-          <td class="after">70億円以上</td>
-        </tr>
-        <tr>
-          <td class="metric">営業利益率</td>
-          <td class="before">5.5%</td>
-          <td class="arrow">→</td>
-          <td class="after">12%以上</td>
-        </tr>
-        <tr>
-          <td class="metric">従業員数</td>
-          <td class="before">780名</td>
-          <td class="arrow">→</td>
-          <td class="after">1,200名以上</td>
-        </tr>
-        <tr>
-          <td class="metric">EC売上比率</td>
-          <td class="before">20%</td>
-          <td class="arrow">→</td>
-          <td class="after">50%以上</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- 新卒採用への期待 -->
-  <div class="section">
-    <h2>🌟 新卒採用への期待（代表の想定）</h2>
-    <div class="expect-card">
-      <div class="expect-no">No.1</div>
-      <div>
-        <div class="expect-name">中村 さくら</div>
-        <div class="expect-dept">直営店 or カスタマーサポート部</div>
+  <!-- KPI -->
+  <div class="sec">
+    <div class="sec-title">2030 → 2035 KPI Targets</div>
+    <div class="kpi-wrap">
+      <div class="kpi-head">
+        <span>指標</span><span>現在</span><span></span><span>目標</span>
       </div>
-    </div>
-    <div class="expect-card">
-      <div class="expect-no">No.2</div>
-      <div>
-        <div class="expect-name">田中 みなみ</div>
-        <div class="expect-dept">経理・財務部 or 総務・人事部</div>
+      <div class="kpi-row">
+        <span class="kpi-metric">売上高</span>
+        <span class="kpi-before">38億円</span>
+        <span class="kpi-arrow">→</span>
+        <span class="kpi-after">70億円以上</span>
       </div>
-    </div>
-    <div class="expect-card">
-      <div class="expect-no">No.3</div>
-      <div>
-        <div class="expect-name">山口 はな</div>
-        <div class="expect-dept">カスタマーサポート部 or 総務・人事部</div>
+      <div class="kpi-row">
+        <span class="kpi-metric">営業利益率</span>
+        <span class="kpi-before">5.5%</span>
+        <span class="kpi-arrow">→</span>
+        <span class="kpi-after">12%以上</span>
       </div>
-    </div>
-    <div class="expect-card">
-      <div class="expect-no">No.4</div>
-      <div>
-        <div class="expect-name">西川 こと</div>
-        <div class="expect-dept">EC・デジタル事業部 or 広報・ブランドコミュニケーション部</div>
+      <div class="kpi-row">
+        <span class="kpi-metric">従業員数</span>
+        <span class="kpi-before">780名</span>
+        <span class="kpi-arrow">→</span>
+        <span class="kpi-after">1,200名以上</span>
       </div>
-    </div>
-    <div class="expect-card">
-      <div class="expect-no">No.5</div>
-      <div>
-        <div class="expect-name">田村 蓮</div>
-        <div class="expect-dept">EC・デジタル事業部 or 法人営業部</div>
+      <div class="kpi-row">
+        <span class="kpi-metric">EC売上比率</span>
+        <span class="kpi-before">20%</span>
+        <span class="kpi-arrow">→</span>
+        <span class="kpi-after">50%以上</span>
       </div>
     </div>
   </div>
 
-  <div class="back-link"><a href="index.html">← 資料一覧に戻る</a></div>
+  <!-- 代表の想定配属 -->
+  <div class="sec">
+    <div class="sec-title">President's Expected Placements</div>
+    <div class="expect">
+      <div class="exp-no">No.1</div>
+      <div>
+        <div class="exp-name">中村 さくら</div>
+        <div class="exp-dept">直営店 販売部 or カスタマーサポート部</div>
+      </div>
+    </div>
+    <div class="expect">
+      <div class="exp-no">No.2</div>
+      <div>
+        <div class="exp-name">田中 みなみ</div>
+        <div class="exp-dept">経理・財務部 or 総務・人事部</div>
+      </div>
+    </div>
+    <div class="expect">
+      <div class="exp-no">No.3</div>
+      <div>
+        <div class="exp-name">山口 はな</div>
+        <div class="exp-dept">カスタマーサポート部 or 総務・人事部</div>
+      </div>
+    </div>
+    <div class="expect">
+      <div class="exp-no">No.4</div>
+      <div>
+        <div class="exp-name">西川 こと</div>
+        <div class="exp-dept">EC・デジタル事業部 or 広報・ブランドコミュニケーション部</div>
+      </div>
+    </div>
+    <div class="expect">
+      <div class="exp-no">No.5</div>
+      <div>
+        <div class="exp-name">田村 蓮</div>
+        <div class="exp-dept">EC・デジタル事業部 or 法人営業部</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="back-link"><a href="index.html">← BACK TO LIST</a></div>
 </div>
-
 </body>
 </html>
